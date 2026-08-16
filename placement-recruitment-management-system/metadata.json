@@ -1,0 +1,6 @@
+{
+  "name": "Placement & Recruitment Management System",
+  "description": "A modern and professional Placement & Recruitment Management System (PRMS) for students and recruiters.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,50 @@
+# Root .gitignore for PRMS Public Demo
+
+# Maven & Build Artifacts
+**/target/
+**/build/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Node & Frontend Build Artifacts
+**/node_modules/
+**/dist/
+**/coverage/
+
+# Environment Variables & Secret Files
+**/.env*
+!**/.env.example
+.git_backup_old_repo/
+**/.git_backup_old_repo/
+
+# IDE & Editor Configurations
+.metadata/
+**/.metadata/
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+
+# Logs, Diagnostic & Temporary Test Scripts
+*.log
+**/*.log
+*.ps1
+**/*.ps1
+smoke-test-results.json
+HashGen.java
+
+# User Generated Uploads (Preserve predefined demo samples)
+prms-backend/uploads/*
+!prms-backend/uploads/samples/
+!prms-backend/uploads/samples/*

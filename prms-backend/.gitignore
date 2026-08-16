@@ -1,0 +1,43 @@
+# Build & Maven Artifacts
+target/
+build/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Environment Variables & Secret Files
+.env*
+!.env.example
+
+# IDE & Editor Configurations
+.metadata/
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+.idea
+*.iws
+*.iml
+*.ipr
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+.vscode/
+
+# Logs, Diagnostic & Temporary Test Scripts
+*.log
+*.ps1
+smoke-test-results.json
+HashGen.java
+
+# User Generated Uploads (Preserve predefined demo samples)
+uploads/*
+!uploads/samples/
+!uploads/samples/*

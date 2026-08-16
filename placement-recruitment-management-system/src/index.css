@@ -1,0 +1,530 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Color Variables */
+:root {
+  --prms-primary: #2563EB;
+  --prms-primary-hover: #1D4ED8;
+  --prms-secondary: #1E293B;
+  --prms-success: #16A34A;
+  --prms-warning: #D97706;
+  --prms-danger: #DC2626;
+  --prms-bg: #F8FAFC;
+  --prms-card-bg: #FFFFFF;
+}
+
+/* Base Styles */
+body {
+  font-family: 'Inter', sans-serif !important;
+  background-color: var(--prms-bg) !important;
+  color: var(--prms-secondary) !important;
+  overflow-x: hidden;
+}
+
+/* Missing Slate Tailwind Colors */
+.text-slate-50 { color: #f8fafc !important; }
+.text-slate-100 { color: #f1f5f9 !important; }
+.text-slate-200 { color: #e2e8f0 !important; }
+.text-slate-300 { color: #cbd5e1 !important; }
+.text-slate-400 { color: #94a3b8 !important; }
+.text-slate-500 { color: #64748b !important; }
+.text-slate-600 { color: #475569 !important; }
+.text-slate-700 { color: #334155 !important; }
+.text-slate-800 { color: #1e293b !important; }
+.text-slate-900 { color: #0f172a !important; }
+
+.bg-slate-50 { background-color: #f8fafc !important; }
+.bg-slate-100 { background-color: #f1f5f9 !important; }
+.bg-slate-200 { background-color: #e2e8f0 !important; }
+.bg-slate-300 { background-color: #cbd5e1 !important; }
+.bg-slate-400 { background-color: #94a3b8 !important; }
+.bg-slate-500 { background-color: #64748b !important; }
+.bg-slate-600 { background-color: #475569 !important; }
+.bg-slate-700 { background-color: #334155 !important; }
+.bg-slate-800 { background-color: #1e293b !important; }
+.bg-slate-900 { background-color: #0f172a !important; }
+
+/* Professional Polish Card Custom Overrides */
+.card {
+  border-radius: 16px !important;
+  border: 1px solid #E2E8F0 !important;
+  background-color: var(--prms-card-bg) !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.04), 0 4px 6px -4px rgba(0, 0, 0, 0.04) !important;
+  border-color: #CBD5E1 !important;
+}
+
+/* Button Styling */
+.btn {
+  border-radius: 12px !important;
+  font-weight: 550 !important;
+  padding: 0.55rem 1.25rem !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  font-size: 0.9rem !important;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.85rem !important;
+  font-size: 0.8rem !important;
+  border-radius: 8px !important;
+}
+
+.btn-primary {
+  background-color: var(--prms-primary) !important;
+  border-color: var(--prms-primary) !important;
+  color: #ffffff !important;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--prms-primary-hover) !important;
+  border-color: var(--prms-primary-hover) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15) !important;
+}
+
+.btn-secondary {
+  background-color: #475569 !important;
+  border-color: #475569 !important;
+  color: #ffffff !important;
+}
+
+.btn-outline-primary {
+  color: var(--prms-primary) !important;
+  border-color: #DBEAFE !important;
+  background: transparent !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: #EFF6FF !important;
+  color: var(--prms-primary-hover) !important;
+  border-color: var(--prms-primary) !important;
+}
+
+.btn-outline-danger {
+  color: var(--prms-danger) !important;
+  border-color: #FEE2E2 !important;
+  background: transparent !important;
+}
+
+.btn-outline-danger:hover {
+  background-color: #FEF2F2 !important;
+  color: var(--prms-danger) !important;
+  border-color: var(--prms-danger) !important;
+}
+
+/* Inputs and Forms */
+.form-control, .form-select {
+  border-radius: 10px !important;
+  border: 1px solid #E2E8F0 !important;
+  padding: 0.6rem 0.95rem !important;
+  font-size: 0.9rem !important;
+  transition: all 0.2s ease !important;
+  background-color: #FFFFFF !important;
+  color: #1E293B !important;
+}
+
+.form-control.ps-5 {
+  padding-left: 2.75rem !important;
+}
+
+.form-control.pe-5 {
+  padding-right: 2.75rem !important;
+}
+
+.translate-middle-y {
+  transform: translateY(-50%) !important;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--prms-primary) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+  outline: none !important;
+}
+
+/* Badges for Professional Polish theme */
+.badge {
+  padding: 0.35rem 0.75rem !important;
+  font-weight: 600 !important;
+  border-radius: 9999px !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.025em;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px;
+  border: 1px solid transparent !important;
+}
+
+/* Badges mapped colors */
+.bg-primary, .bg-blue-600 {
+  background-color: #2563EB !important;
+  color: #ffffff !important;
+}
+
+.bg-primary-subtle, .bg-blue-100 {
+  background-color: #DBEAFE !important;
+  color: #1D4ED8 !important;
+}
+
+.bg-success, .bg-green-600 {
+  background-color: #16A34A !important;
+  color: #ffffff !important;
+}
+
+.bg-success-subtle, .bg-green-100 {
+  background-color: #DCFCE7 !important;
+  color: #15803D !important;
+}
+
+.bg-warning, .bg-orange-500 {
+  background-color: #EA580C !important;
+  color: #ffffff !important;
+}
+
+.bg-warning-subtle, .bg-warning bg-opacity-10, .bg-amber-100, .bg-orange-100 {
+  background-color: #FFEDD5 !important;
+  color: #C2410C !important;
+}
+
+.bg-danger, .bg-red-600 {
+  background-color: #DC2626 !important;
+  color: #ffffff !important;
+}
+
+.bg-danger-subtle, .bg-red-100 {
+  background-color: #FEE2E2 !important;
+  color: #B91C1C !important;
+}
+
+.bg-purple-subtle, .bg-purple-100 {
+  background-color: #F3E8FF !important;
+  color: #7E22CE !important;
+}
+
+.bg-light {
+  background-color: #F1F5F9 !important;
+  color: #475569 !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Sidebar Styling - Matches Professional Polish Theme perfectly */
+.sidebar {
+  min-height: 100vh;
+  background-color: #1E293B !important;
+  border-right: none !important;
+  transition: all 0.3s ease;
+}
+
+.sidebar .nav-link {
+  color: #94A3B8 !important;
+  font-weight: 500;
+  padding: 0.75rem 1rem !important;
+  border-radius: 12px !important;
+  margin-bottom: 0.4rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar .nav-link:hover {
+  color: #FFFFFF !important;
+  background-color: #334155 !important;
+}
+
+.sidebar .nav-link.active {
+  background-color: #2563EB !important;
+  color: #FFFFFF !important;
+  border-left: none !important;
+}
+
+/* Modern Header */
+.dashboard-header {
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #E2E8F0;
+  height: 64px;
+}
+
+/* Custom polished Tables */
+.table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  width: 100% !important;
+  margin-bottom: 0 !important;
+}
+
+.table thead th {
+  background-color: #F8FAFC !important;
+  color: #64748B !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 14px 24px !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+  border-top: none !important;
+}
+
+.table tbody tr {
+  transition: background-color 0.2s ease !important;
+}
+
+.table tbody tr:hover {
+  background-color: #F8FAFC !important;
+}
+
+.table tbody td {
+  padding: 16px 24px !important;
+  border-bottom: 1px solid #F1F5F9 !important;
+  color: #334155 !important;
+  font-size: 0.875rem !important;
+  vertical-align: middle !important;
+}
+
+/* Animations and Utilities */
+.text-gradient {
+  background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-pattern {
+  background-image: radial-gradient(#E2E8F0 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-color: #F8FAFC;
+}
+
+/* OTP Input boxes */
+.otp-box {
+  width: 48px;
+  height: 56px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 12px;
+  border: 2px solid #E2E8F0;
+  transition: all 0.2s ease;
+}
+
+.otp-box:focus {
+  border-color: var(--prms-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ==========================================================================
+   PRMS Pro Redesign - Premium Visual System
+   ========================================================================== */
+
+/* Modern seamless background */
+.auth-page-bg {
+  background-color: #F8FAFC !important;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.07) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(124, 58, 237, 0.07) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%),
+    radial-gradient(#CBD5E1 1px, transparent 1px) !important;
+  background-size: 100% 100%, 100% 100%, 100% 100%, 24px 24px !important;
+  background-position: 0 0, 0 0, 0 0, 0 0 !important;
+  background-attachment: fixed !important;
+}
+
+/* Modern clean card */
+.auth-card {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.05), 
+              0 8px 10px -6px rgba(15, 23, 42, 0.03) !important;
+  border-radius: 20px !important;
+  overflow: hidden;
+  transition: all 0.3s ease !important;
+}
+
+/* Card Accent Top Lines */
+.card-top-accent-student {
+  border-top: 4px solid #2563EB !important;
+}
+
+.card-top-accent-recruiter {
+  border-top: 4px solid #16A34A !important;
+}
+
+.card-top-accent-tpo {
+  border-top: 4px solid #7C3AED !important;
+}
+
+/* Dynamic Interactive Role Cards */
+.role-card {
+  position: relative;
+  background: #ffffff !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 20px !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.03), 0 2px 4px -1px rgba(15, 23, 42, 0.02) !important;
+}
+
+.role-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04) !important;
+}
+
+.role-card-student:hover {
+  border-color: #3B82F6 !important;
+}
+
+.role-card-recruiter:hover {
+  border-color: #22C55E !important;
+}
+
+.role-card-tpo:hover {
+  border-color: #8B5CF6 !important;
+}
+
+/* Custom icon badge containers inside cards */
+.role-icon-box {
+  width: 64px;
+  height: 64px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  margin-bottom: 1.25rem;
+}
+
+/* Premium Input Fields - Clean White, Crisp Borders */
+.form-input-container {
+  position: relative;
+}
+
+.form-input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94A3B8;
+  transition: color 0.2s ease;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.form-control-premium {
+  padding-left: 2.75rem !important;
+  border-radius: 12px !important;
+  border: 1px solid #E2E8F0 !important;
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  transition: all 0.2s ease !important;
+  font-size: 0.925rem !important;
+}
+
+.form-control-premium:focus {
+  border-color: #2563EB !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+  background-color: #FFFFFF !important;
+}
+
+.form-control-premium:focus + .form-input-icon {
+  color: #2563EB;
+}
+
+.form-control-premium-success:focus {
+  border-color: #16A34A !important;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1) !important;
+}
+
+.form-control-premium-success:focus + .form-input-icon {
+  color: #16A34A;
+}
+
+/* Clean Dynamic Buttons */
+.btn-premium {
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  padding: 0.7rem 1.25rem !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  font-size: 0.925rem !important;
+}
+
+.btn-premium:hover {
+  transform: translateY(-1px);
+}
+
+.btn-premium-primary {
+  background-color: #2563EB !important;
+  border-color: #2563EB !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2) !important;
+}
+
+.btn-premium-primary:hover {
+  background-color: #1D4ED8 !important;
+  border-color: #1D4ED8 !important;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3) !important;
+}
+
+.btn-premium-success {
+  background-color: #16A34A !important;
+  border-color: #16A34A !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2) !important;
+}
+
+.btn-premium-success:hover {
+  background-color: #15803D !important;
+  border-color: #15803D !important;
+  box-shadow: 0 6px 16px rgba(22, 163, 74, 0.3) !important;
+}
+
+.btn-premium-tpo {
+  background-color: #7C3AED !important;
+  border-color: #7C3AED !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2) !important;
+}
+
+.btn-premium-tpo:hover {
+  background-color: #6D28D9 !important;
+  border-color: #6D28D9 !important;
+  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.3) !important;
+}
+
+/* Dashboard Main Stage Desktop Layout Offset */
+.dashboard-main-stage {
+  margin-left: 0;
+  width: 100%;
+  transition: margin-left 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .dashboard-main-stage {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+  }
+}
+
+
+
