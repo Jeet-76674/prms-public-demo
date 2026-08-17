@@ -46,16 +46,29 @@ export default function DemoBanner() {
         }}
       >
         <div className="d-flex align-items-center gap-2 flex-wrap">
-          <span className="badge bg-indigo-500 text-white rounded-pill px-2 py-0.5 d-inline-flex align-items-center gap-1" style={{ backgroundColor: '#6366F1' }}>
+          <span 
+            className="rounded-pill px-2.5 py-0.5 d-inline-flex align-items-center gap-1.5 fw-semibold" 
+            style={{ backgroundColor: '#6366F1', color: '#FFFFFF', fontSize: '0.72rem', letterSpacing: '0.03em' }}
+          >
             <Sparkles size={12} />
             <span>DEMO SANDBOX</span>
           </span>
-          <span className="opacity-90">
+          <span className="opacity-90 text-white" style={{ fontSize: '0.8rem' }}>
             Fictional university data. Uploads are strictly validated and simulated.
           </span>
           {role && (
-            <span className="badge bg-white bg-opacity-20 text-white ms-1 rounded-pill">
-              Active Role: {role}
+            <span 
+              className="ms-1 rounded-pill px-2.5 py-0.5 fw-semibold d-inline-flex align-items-center"
+              style={{
+                backgroundColor: 'rgba(99, 102, 241, 0.25)',
+                color: '#C7D2FE',
+                border: '1px solid rgba(165, 180, 252, 0.4)',
+                fontSize: '0.72rem',
+                letterSpacing: '0.03em',
+                textTransform: 'uppercase'
+              }}
+            >
+              Role: {role}
             </span>
           )}
         </div>
@@ -63,8 +76,13 @@ export default function DemoBanner() {
         <div className="d-flex align-items-center gap-2">
           <button
             onClick={() => setShowConfirmModal(true)}
-            className="btn btn-sm btn-outline-light py-0.5 px-2.5 rounded-pill d-inline-flex align-items-center gap-1.5 fw-medium"
-            style={{ fontSize: '0.75rem', borderColor: 'rgba(255,255,255,0.4)' }}
+            className="btn btn-sm py-0.5 px-2.5 rounded-pill d-inline-flex align-items-center gap-1.5 fw-medium"
+            style={{ 
+              fontSize: '0.75rem', 
+              border: '1px solid rgba(255, 255, 255, 0.4)',
+              color: '#FFFFFF',
+              backgroundColor: 'rgba(255, 255, 255, 0.1)'
+            }}
             title="Restore baseline students, companies, applications, and jobs"
           >
             <RotateCcw size={12} />
