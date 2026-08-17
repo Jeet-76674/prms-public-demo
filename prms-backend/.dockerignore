@@ -1,0 +1,17 @@
+.git
+.git_backup_old_repo
+.env*
+!.env.example
+target/
+build/
+*.log
+*.ps1
+smoke-test-results.json
+HashGen.java
+.metadata/
+.idea/
+.vscode/
+uploads/resumes/
+uploads/job-descriptions/
+uploads/company-logos/
+uploads/profile-images/
