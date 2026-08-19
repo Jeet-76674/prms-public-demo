@@ -1,53 +1,121 @@
 package com.prms.service.email;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class EmailServiceImpl implements EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private static final Logger log = LoggerFactory.getLogger(EmailServiceImpl.class);
+    private static final String BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
+
+    @Value("${brevo.api.key:}")
+    private String apiKey;
+
+    @Value("${brevo.sender.email:placement.prms@gmail.com}")
+    private String senderEmail;
+
+    @Value("${brevo.sender.name:Placement Recruitment Management System}")
+    private String senderName;
+
+    private final HttpClient httpClient;
+
+    public EmailServiceImpl() {
+        this.httpClient = HttpClient.newBuilder()
+                .connectTimeout(Duration.ofSeconds(10))
+                .build();
+    }
 
     @Override
     @Async
     public void sendOtp(String email, String otp) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("PRMS Email Verification OTP");
-        message.setText(
-                "Dear User,\n\n"
-              + "Your One Time Password (OTP) for PRMS verification is:\n\n"
-              + otp
-              + "\n\n"
-              + "This OTP is valid for 5 minutes.\n"
-              + "Please do not share this OTP with anyone.\n\n"
-              + "Regards,\n"
-              + "Placement Recruitment Management System"
-        );
-        mailSender.send(message);
+        String subject = "PRMS Email Verification OTP";
+        String htmlBody = "<p>Dear User,</p>"
+                + "<p>Your One Time Password (OTP) for PRMS verification is:</p>"
+                + "<h2 style=\"color: #2563eb; letter-spacing: 2px;\">" + otp + "</h2>"
+                + "<p>This OTP is valid for 5 minutes.<br/>"
+                + "Please do not share this OTP with anyone.</p>"
+                + "<br/><p>Regards,</p><p>Placement Recruitment Management System</p>";
+
+        sendHtmlEmail(email, subject, htmlBody);
     }
 
     @Override
     @Async
     public void sendHtmlEmail(String to, String subject, String htmlBody) {
-        try {
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(htmlBody, true);
-            mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
-            throw new RuntimeException("Failed to send email", e);
+        if (apiKey == null || apiKey.trim().isEmpty()) {
+            log.warn("[BREVO] Brevo API key is not configured. Email to {} ('{}') was skipped.", to, subject);
+            return;
         }
+
+        try {
+            String requestJson = buildEmailJson(to, subject, htmlBody);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BREVO_API_URL))
+                    .timeout(Duration.ofSeconds(15))
+                    .header("api-key", apiKey.trim())
+                    .header("Content-Type", "application/json")
+                    .header("Accept", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestJson))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 200 && response.statusCode() < 300) {
+                log.info("[BREVO] Email successfully sent to {}. Status code: {}", to, response.statusCode());
+            } else {
+                log.error("[BREVO] Failed to send email to {}. HTTP Status: {}, Response: {}",
+                        to, response.statusCode(), response.body());
+            }
+        } catch (Exception e) {
+            log.error("[BREVO] Exception occurred while sending email to {}: {}", to, e.getMessage(), e);
+        }
+    }
+
+    private String buildEmailJson(String to, String subject, String htmlContent) {
+        return "{"
+                + "\"sender\":{\"name\":\"" + escapeJson(senderName) + "\",\"email\":\"" + escapeJson(senderEmail) + "\"},"
+                + "\"to\":[{\"email\":\"" + escapeJson(to) + "\"}],"
+                + "\"subject\":\"" + escapeJson(subject) + "\","
+                + "\"htmlContent\":\"" + escapeJson(htmlContent) + "\""
+                + "}";
+    }
+
+    private String escapeJson(String s) {
+        if (s == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            switch (ch) {
+                case '"' -> sb.append("\\\"");
+                case '\\' -> sb.append("\\\\");
+                case '\b' -> sb.append("\\b");
+                case '\f' -> sb.append("\\f");
+                case '\n' -> sb.append("\\n");
+                case '\r' -> sb.append("\\r");
+                case '\t' -> sb.append("\\t");
+                default -> {
+                    if (ch <= 0x1F) {
+                        sb.append(String.format("\\u%04x", (int) ch));
+                    } else {
+                        sb.append(ch);
+                    }
+                }
+            }
+        }
+        return sb.toString();
     }
 
     @Override
@@ -83,7 +151,7 @@ public class EmailServiceImpl implements EmailService {
         String htmlBody = "<h3>Offer Update</h3>"
                 + "<p>The offer extended to <strong>" + studentName + "</strong> by <strong>" + company + "</strong> has been ACCEPTED.</p>"
                 + "<br/><p>Regards,</p><p>Placement Recruitment Management System</p>";
-        
+
         sendHtmlEmail(studentEmail, subject, htmlBody);
         sendHtmlEmail(recruiterEmail, subject, htmlBody);
     }
@@ -95,7 +163,7 @@ public class EmailServiceImpl implements EmailService {
         String htmlBody = "<h3>Offer Update</h3>"
                 + "<p>The offer extended to <strong>" + studentName + "</strong> by <strong>" + company + "</strong> has been DECLINED.</p>"
                 + "<br/><p>Regards,</p><p>Placement Recruitment Management System</p>";
-        
+
         sendHtmlEmail(recruiterEmail, subject, htmlBody);
     }
 
@@ -106,7 +174,7 @@ public class EmailServiceImpl implements EmailService {
         String htmlBody = "<h3>Joining Confirmation</h3>"
                 + "<p><strong>" + studentName + "</strong> has officially JOINED <strong>" + company + "</strong>.</p>"
                 + "<br/><p>Regards,</p><p>Placement Recruitment Management System</p>";
-        
+
         sendHtmlEmail(studentEmail, subject, htmlBody);
         sendHtmlEmail(recruiterEmail, subject, htmlBody);
         if (tpoEmail != null && !tpoEmail.isEmpty()) {
@@ -126,14 +194,14 @@ public class EmailServiceImpl implements EmailService {
                 + "<li><strong>Time:</strong> " + time + "</li>"
                 + "<li><strong>Meeting Link / Location:</strong> " + linkOrLocation + "</li>"
                 + "</ul>";
-        
+
         if (instructions != null && !instructions.trim().isEmpty()) {
             htmlBody += "<h4>Instructions from Recruiter:</h4>"
                      + "<p>" + instructions.replace("\n", "<br/>") + "</p>";
         }
 
         htmlBody += "<br/><p>Best of luck!</p><p>Placement Recruitment Management System</p>";
-        
+
         sendHtmlEmail(studentEmail, subject, htmlBody);
     }
 }
