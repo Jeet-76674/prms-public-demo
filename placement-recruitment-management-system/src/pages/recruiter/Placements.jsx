@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Pagination from '../../components/Pagination';
+import { formatStudentName } from '../../utils/nameHelper';
 
 export default function RecruiterPlacements() {
   const [placements, setPlacements] = useState([]);
@@ -90,7 +91,7 @@ export default function RecruiterPlacements() {
                 {placements.map((placement) => (
                   <tr key={placement.id}>
                     <td className="px-4 py-3">
-                      <div className="fw-bold text-dark">{placement.studentName}</div>
+                      <div className="fw-bold text-dark">{formatStudentName(placement.studentName)}</div>
                     </td>
                     <td>
                       <div className="fw-semibold text-secondary">{placement.jobTitle}</div>

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { tpoService } from '../../services/tpoService';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
+import { formatStudentName } from '../../utils/nameHelper';
 import {
   ArrowLeft,
   Loader2,
@@ -146,7 +147,7 @@ export default function TpoPlacementDetails() {
                 <div className="bg-light p-2 rounded text-primary"><User size={18} /></div>
                 <div>
                   <div className="text-xs text-muted fw-semibold">Student</div>
-                  <div className="fw-medium text-dark">{placement.studentName}</div>
+                  <div className="fw-medium text-dark">{formatStudentName(placement.studentName, placement.studentEmail)}</div>
                 </div>
               </div>
               <div className="d-flex align-items-center gap-3">

@@ -7,6 +7,7 @@ import { ArrowLeft, Users, FileText, Eye, Loader2, Calendar, ChevronDown } from 
 import toast from 'react-hot-toast';
 import Pagination from '../../components/Pagination';
 import { resolvePdfUrl } from '../../utils/pdfHelper';
+import { formatStudentName } from '../../utils/nameHelper';
 
 export default function RecruiterApplicants() {
   const { id } = useParams();
@@ -351,7 +352,7 @@ export default function RecruiterApplicants() {
                               />
                             </td>
                             <td className="py-3">
-                              <div className="fw-bold text-dark">{app.studentName}</div>
+                              <div className="fw-bold text-dark">{formatStudentName(app.studentName, app.studentEmail)}</div>
                             </td>
                             <td className="text-muted">
                               {app.studentEmail}

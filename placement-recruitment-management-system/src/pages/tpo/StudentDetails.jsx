@@ -25,6 +25,7 @@ import {
   Calendar
 } from 'lucide-react';
 import { resolvePdfUrl } from '../../utils/pdfHelper';
+import { formatStudentName, formatStudentInitials } from '../../utils/nameHelper';
 
 export default function TpoStudentDetails() {
   const { id } = useParams();
@@ -132,11 +133,13 @@ export default function TpoStudentDetails() {
           <div className="card border-0 bg-white shadow-sm p-4 text-center h-100" style={{ borderRadius: '12px' }}>
             <div className="mb-4">
               <div className="bg-light rounded-circle d-inline-flex align-items-center justify-content-center text-primary border mx-auto shadow-sm" style={{ width: '120px', height: '120px', fontSize: '2.5rem', fontWeight: 'bold' }}>
-                {student.firstName?.[0]}{student.lastName?.[0]}
+                {formatStudentInitials(student.firstName, student.lastName)}
               </div>
             </div>
             
-            <h4 className="fw-bold text-dark mb-1">{student.firstName} {student.lastName}</h4>
+            <h4 className="fw-bold text-dark mb-1">
+              {formatStudentName(`${student.firstName || ''} ${student.lastName || ''}`.trim(), student.email)}
+            </h4>
             <p className="text-muted text-sm mb-1">{student.enrollmentNumber}</p>
             <p className="text-muted text-sm fw-medium mb-3">{student.department || 'Department not specified'}</p>
             

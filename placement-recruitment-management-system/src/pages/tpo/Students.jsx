@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Pagination from '../../components/Pagination';
+import { formatStudentName, formatStudentInitials } from '../../utils/nameHelper';
 
 export default function TpoStudents() {
   const navigate = useNavigate();
@@ -225,10 +226,12 @@ export default function TpoStudents() {
                     <td className="px-4 py-3">
                       <div className="d-flex align-items-center gap-3">
                         <div className="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary fw-bold border" style={{ width: '40px', height: '40px' }}>
-                          {student.firstName?.[0]}{student.lastName?.[0]}
+                          {formatStudentInitials(student.firstName, student.lastName)}
                         </div>
                         <div>
-                          <h6 className="fw-bold mb-0 text-dark">{student.firstName} {student.lastName}</h6>
+                          <h6 className="fw-bold mb-0 text-dark">
+                            {formatStudentName(`${student.firstName || ''} ${student.lastName || ''}`.trim(), student.email)}
+                          </h6>
                           <div className="text-muted text-xs mt-1">
                             {student.enrollmentNumber}
                           </div>

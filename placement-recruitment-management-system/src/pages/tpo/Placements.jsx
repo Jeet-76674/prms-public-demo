@@ -20,6 +20,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import Pagination from '../../components/Pagination';
+import { formatStudentName } from '../../utils/nameHelper';
 
 export default function TpoPlacements() {
   const [placements, setPlacements] = useState([]);
@@ -346,7 +347,7 @@ export default function TpoPlacements() {
                     style={{ cursor: 'pointer' }}
                   >
                     <td className="px-4 py-3">
-                      <div className="fw-bold text-dark">{placement.studentName}</div>
+                      <div className="fw-bold text-dark">{formatStudentName(placement.studentName)}</div>
                       {placement.enrollmentNumber && (
                         <div className="text-muted" style={{ fontSize: '0.75rem' }}>{placement.enrollmentNumber}</div>
                       )}
@@ -573,7 +574,7 @@ export default function TpoPlacements() {
                         {pendingConversions.map((app) => (
                           <tr key={app.applicationId}>
                             <td className="px-4 py-3">
-                              <div className="fw-bold text-dark" style={{ fontSize: '0.9rem' }}>{app.studentName}</div>
+                              <div className="fw-bold text-dark" style={{ fontSize: '0.9rem' }}>{formatStudentName(app.studentName, app.studentEmail)}</div>
                               <div className="text-muted" style={{ fontSize: '0.75rem' }}>ID: {app.studentId}</div>
                             </td>
                             <td className="py-3">

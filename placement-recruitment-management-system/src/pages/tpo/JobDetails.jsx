@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, MapPin, Building2, Calendar, IndianRupee, Users, Loader2, Briefcase, ChevronRight, FileText } from 'lucide-react';
 import { tpoService } from '../../services/tpoService';
+import { resolvePdfUrl } from '../../utils/pdfHelper';
+import { formatStudentName } from '../../utils/nameHelper';
 import toast from 'react-hot-toast';
 
 export default function TpoJobDetails() {
@@ -191,10 +193,10 @@ export default function TpoJobDetails() {
                           <td className="ps-4 py-3">
                             <div className="d-flex align-items-center gap-3">
                               <div className="bg-primary bg-opacity-10 text-primary fw-bold rounded-circle d-flex justify-content-center align-items-center" style={{ width: '40px', height: '40px' }}>
-                                {app.studentName.charAt(0)}
+                                {formatStudentName(app.studentName, app.studentEmail).charAt(0)}
                               </div>
                               <div>
-                                <div className="fw-semibold text-slate-800">{app.studentName}</div>
+                                <div className="fw-semibold text-slate-800">{formatStudentName(app.studentName, app.studentEmail)}</div>
                                 <div className="text-muted small">{app.studentEmail}</div>
                               </div>
                             </div>
