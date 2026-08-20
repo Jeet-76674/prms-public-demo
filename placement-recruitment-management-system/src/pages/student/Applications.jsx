@@ -128,13 +128,13 @@ export default function StudentApplications() {
                 >
                   
                   {/* Status header row */}
-                  <div className="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-light flex-wrap gap-2">
+                  <div className="d-flex justify-content-between align-items-center mb-3 pb-2.5 border-bottom border-light flex-wrap gap-2">
                     <div className="d-flex align-items-center gap-2">
-                      <Calendar size={15} className="text-muted" />
-                      <span className="text-secondary text-xs">Applied on: <strong>{new Date(app.appliedAt).toLocaleDateString()}</strong></span>
+                      <Calendar size={14} className="text-muted" />
+                      <span className="text-secondary text-xs">Applied on: <strong className="text-slate-800">{new Date(app.appliedAt).toLocaleDateString()}</strong></span>
                     </div>
                     <span 
-                      className={`badge border ${statusInfo.bgClass} px-2.5 py-1 fw-semibold`} 
+                      className={`badge border ${statusInfo.bgClass} px-3 py-1 fw-semibold`} 
                       style={statusInfo.customStyle || (statusInfo.color ? { color: statusInfo.color, borderColor: statusInfo.color } : {})}
                     >
                       {statusInfo.text}
@@ -142,114 +142,125 @@ export default function StudentApplications() {
                   </div>
 
                   {/* Body Info row */}
-                  <div className="row g-3 align-items-center">
-                    <div className="col-12 col-md-7">
+                  <div className="row g-3 align-items-center justify-content-between">
+                    {/* Left: Job Info & Document Action Chips */}
+                    <div className="col-12 col-lg-6">
                       <Link to={`/student/jobs/${app.jobId}`} className="text-decoration-none" onClick={(e) => e.stopPropagation()}>
-                        <h5 className="fw-bold text-slate-900 mb-1 card-hover-text" style={{ fontSize: '1.05rem', letterSpacing: '-0.01em' }}>{app.jobTitle}</h5>
+                        <h5 className="fw-bold text-slate-900 mb-2 card-hover-text" style={{ fontSize: '1.05rem', letterSpacing: '-0.01em' }}>
+                          {app.jobTitle}
+                        </h5>
                       </Link>
                       
-                      {/* Attachments details list */}
-                      <div className="d-flex flex-wrap gap-3 mt-2 text-muted" style={{ fontSize: '0.825rem' }}>
+                      <div className="d-flex flex-wrap gap-2 text-muted" style={{ fontSize: '0.8rem' }}>
                         <a 
                           href={resolvePdfUrl(app.resumeUrl, 'resume')} 
                           target="_blank" 
                           rel="noopener noreferrer" 
                           onClick={(e) => e.stopPropagation()}
-                          className="d-flex align-items-center gap-1.5 text-decoration-none cursor-pointer text-secondary hover-text-primary fw-medium"
+                          className="d-inline-flex align-items-center gap-1.5 px-2.5 py-1 rounded-2 bg-light border text-decoration-none text-slate-700 hover-text-primary fw-medium transition-all"
                         >
-                          <FileText size={15} className="text-primary" />
+                          <FileText size={14} className="text-primary" />
                           <span>View Resume</span>
                         </a>
+                        
                         {app.coverLetter ? (
-                          <span 
-                            className="d-flex align-items-center gap-1.5 cursor-pointer text-secondary hover-text-primary fw-medium" 
+                          <button 
+                            type="button"
+                            className="btn btn-light btn-sm d-inline-flex align-items-center gap-1.5 px-2.5 py-1 border text-slate-700 hover-text-primary fw-medium"
+                            style={{ fontSize: '0.8rem', borderRadius: '6px' }}
                             onClick={(e) => {
                               e.stopPropagation();
                               setCoverLetterTarget(app.coverLetter);
-                            }} 
-                            style={{ cursor: 'pointer' }}
+                            }}
                           >
-                            <Eye size={15} className="text-primary" />
-                            <span>View Cover Letter</span>
-                          </span>
+                            <Eye size={14} className="text-primary" />
+                            <span>Cover Letter</span>
+                          </button>
                         ) : (
-                          <span className="d-flex align-items-center gap-1 text-muted">
-                            <Eye size={15} /> No Cover Letter
+                          <span className="d-inline-flex align-items-center gap-1 px-2.5 py-1 rounded-2 bg-light border text-muted" style={{ fontSize: '0.8rem' }}>
+                            <Eye size={14} className="opacity-50" /> No Cover Letter
                           </span>
                         )}
                       </div>
                     </div>
 
-                    {/* Timeline visualization */}
-                    <div className="col-12 col-md-4 text-md-end d-flex flex-column justify-content-between">
-                      <div className="mb-3">
-                        <div className="text-muted text-xs mb-2 fw-semibold">PIPELINE PROGRESSION</div>
-                        {/* Progressive line graph representation */}
-                        <div className="progress mb-2 bg-light" style={{ height: '6px', borderRadius: '4px' }}>
+                    {/* Right: Pipeline Progression & Action Buttons */}
+                    <div className="col-12 col-lg-5 text-lg-end">
+                      {/* Pipeline Stage Bar */}
+                      <div className="mb-2">
+                        <div className="d-flex justify-content-between align-items-center mb-1.5">
+                          <span className="text-muted fw-semibold text-uppercase" style={{ fontSize: '0.68rem', letterSpacing: '0.04em' }}>Pipeline Stage</span>
+                          <span className="fw-semibold text-slate-700" style={{ fontSize: '0.72rem' }}>
+                            {app.applicationStatus === 'SELECTED' || app.applicationStatus === 'OFFER_ACCEPTED' ? 'Offer Issued (100%)' :
+                             app.applicationStatus === 'INTERVIEW_SCHEDULED' ? 'Interview Stage (75%)' :
+                             app.applicationStatus === 'SHORTLISTED' ? 'Shortlisted (60%)' :
+                             app.applicationStatus === 'UNDER_REVIEW' ? 'Under Review (40%)' :
+                             app.applicationStatus === 'REJECTED' ? 'Archived' : 'Application Received (25%)'}
+                          </span>
+                        </div>
+                        <div className="progress bg-slate-100" style={{ height: '6px', borderRadius: '4px' }}>
                           <div
                             className={`progress-bar ${
                               (app.applicationStatus === 'SELECTED' || app.applicationStatus === 'OFFER_ACCEPTED') ? 'bg-success' : (app.applicationStatus === 'REJECTED' || app.applicationStatus === 'OFFER_REJECTED') ? 'bg-danger' : app.applicationStatus === 'WITHDRAWN' ? 'bg-secondary' : 'bg-primary'
                             }`}
                             style={{
                               width:
-                                (app.applicationStatus === 'SELECTED' || app.applicationStatus === 'OFFER_ACCEPTED')
-                                  ? '100%'
-                                  : app.applicationStatus === 'SHORTLISTED' || app.applicationStatus === 'INTERVIEW_SCHEDULED'
-                                  ? '75%'
-                                  : app.applicationStatus === 'UNDER_REVIEW'
-                                  ? '50%'
-                                  : app.applicationStatus === 'WITHDRAWN'
-                                  ? '100%'
-                                  : '25%'
+                                (app.applicationStatus === 'SELECTED' || app.applicationStatus === 'OFFER_ACCEPTED') ? '100%'
+                                : (app.applicationStatus === 'INTERVIEW_SCHEDULED') ? '75%'
+                                : (app.applicationStatus === 'SHORTLISTED') ? '60%'
+                                : (app.applicationStatus === 'UNDER_REVIEW') ? '40%'
+                                : (app.applicationStatus === 'WITHDRAWN' || app.applicationStatus === 'REJECTED') ? '100%'
+                                : '25%'
                             }}
                           ></div>
                         </div>
                       </div>
 
-                      {/* Withdraw Action button */}
-                      {canWithdraw && (
-                        <button
-                          onClick={() => handleWithdrawClick(app.applicationId)}
-                          className="btn btn-outline-danger btn-sm px-3.5 align-self-md-end shadow-sm"
-                          style={{ borderRadius: '6px' }}
-                        >
-                          Withdraw Submission
-                        </button>
-                      )}
+                      {/* Action Buttons */}
+                      <div className="d-flex align-items-center justify-content-lg-end gap-2 mt-2.5 flex-wrap">
+                        {canWithdraw && (
+                          <button
+                            onClick={() => handleWithdrawClick(app.applicationId)}
+                            className="btn btn-outline-danger btn-sm px-3"
+                            style={{ borderRadius: '6px', fontSize: '0.78rem' }}
+                          >
+                            Withdraw
+                          </button>
+                        )}
 
-                      {/* Interview details button */}
-                      {app.applicationStatus === 'INTERVIEW_SCHEDULED' && (
-                        <button
-                          onClick={() => setInterviewDetailsTarget(app)}
-                          className="btn btn-primary btn-sm px-3.5 align-self-md-end shadow-sm mt-2"
-                          style={{ borderRadius: '6px' }}
-                        >
-                          <Calendar size={14} className="me-1" /> View Interview Details
-                        </button>
-                      )}
+                        {app.applicationStatus === 'INTERVIEW_SCHEDULED' && (
+                          <button
+                            onClick={() => setInterviewDetailsTarget(app)}
+                            className="btn btn-primary btn-sm px-3 shadow-xs d-inline-flex align-items-center gap-1.5"
+                            style={{ borderRadius: '6px', fontSize: '0.8rem' }}
+                          >
+                            <Calendar size={14} />
+                            <span>Interview Details</span>
+                          </button>
+                        )}
 
-                      {/* Offer details button */}
-                      {app.applicationStatus === 'SELECTED' && (
-                        <button
-                          onClick={() => setOfferDetailsTarget(app)}
-                          className="btn btn-success btn-sm px-3.5 align-self-md-end shadow-sm mt-2 fw-medium"
-                          style={{ borderRadius: '6px' }}
-                        >
-                          <FileText size={14} className="me-1" /> View Offer Details
-                        </button>
-                      )}
+                        {app.applicationStatus === 'SELECTED' && (
+                          <button
+                            onClick={() => setOfferDetailsTarget(app)}
+                            className="btn btn-success btn-sm px-3 shadow-xs d-inline-flex align-items-center gap-1.5 fw-medium"
+                            style={{ borderRadius: '6px', fontSize: '0.8rem' }}
+                          >
+                            <FileText size={14} />
+                            <span>View Offer</span>
+                          </button>
+                        )}
 
-                      {/* Accepted/Rejected indicators */}
-                      {app.applicationStatus === 'OFFER_ACCEPTED' && (
-                        <div className="text-success text-sm fw-bold align-self-md-end mt-2 d-flex align-items-center gap-1">
-                          <AlertTriangle size={14} /> Offer Accepted
-                        </div>
-                      )}
-                      {app.applicationStatus === 'OFFER_REJECTED' && (
-                        <div className="text-danger text-sm fw-bold align-self-md-end mt-2 d-flex align-items-center gap-1">
-                          <AlertTriangle size={14} /> Offer Declined
-                        </div>
-                      )}
+                        {app.applicationStatus === 'OFFER_ACCEPTED' && (
+                          <span className="badge bg-success-subtle text-success border-0 px-2.5 py-1 fw-semibold d-inline-flex align-items-center gap-1">
+                            <CheckCircle2 size={13} /> Offer Accepted
+                          </span>
+                        )}
+                        {app.applicationStatus === 'OFFER_REJECTED' && (
+                          <span className="badge bg-danger-subtle text-danger border-0 px-2.5 py-1 fw-semibold d-inline-flex align-items-center gap-1">
+                            <AlertTriangle size={13} /> Offer Declined
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
 
