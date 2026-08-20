@@ -16,10 +16,12 @@ import {
   Loader2,
   CheckCircle2,
   FileDown,
-  Building2
+  Building2,
+  ExternalLink
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { resolvePdfUrl } from '../../utils/pdfHelper';
+import CompanyProfileModal from '../../components/CompanyProfileModal';
 
 export default function StudentJobDetails() {
   const { id } = useParams();
@@ -28,6 +30,7 @@ export default function StudentJobDetails() {
   const [studentProfile, setStudentProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [hasApplied, setHasApplied] = useState(false);
+  const [showCompanyModal, setShowCompanyModal] = useState(false);
   const [showApplyModal, setShowApplyModal] = useState(false);
   const [coverLetter, setCoverLetter] = useState('');
   const [applying, setApplying] = useState(false);
@@ -133,9 +136,16 @@ export default function StudentJobDetails() {
               <div>
                 <h3 className="fw-bold text-slate-900 mb-1" style={{ letterSpacing: '-0.02em' }}>{job.title}</h3>
                 <div className="d-flex flex-wrap align-items-center text-muted gap-3 mt-2" style={{ fontSize: '0.875rem' }}>
-                  <span className="d-flex align-items-center gap-1.5 text-primary fw-semibold">
-                    <Building2 size={15} /> {job.companyName}
-                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setShowCompanyModal(true)}
+                    className="btn btn-link p-0 text-decoration-none d-flex align-items-center gap-1.5 text-primary fw-semibold"
+                    style={{ fontSize: '0.9rem' }}
+                    title="Click to view full Company Profile"
+                  >
+                    <Building2 size={15} /> <span>{job.companyName || 'Corporate Partner'}</span>
+                    <ExternalLink size={12} className="opacity-75" />
+                  </button>
                   <span className="d-flex align-items-center gap-1 text-slate-600">
                     <MapPin size={15} /> {job.location}
                   </span>
@@ -304,6 +314,14 @@ export default function StudentJobDetails() {
           </div>
         </div>
       )}
+
+      {/* Company Profile Overview Modal */}
+      <CompanyProfileModal 
+        companyName={job?.companyName}
+        location={job?.location}
+        isOpen={showCompanyModal}
+        onClose={() => setShowCompanyModal(false)}
+      />
     </motion.div>
   );
 }

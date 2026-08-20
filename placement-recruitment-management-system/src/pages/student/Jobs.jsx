@@ -1,21 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { studentService } from '../../services/studentService';
 import api from '../../services/api';
 import Pagination from '../../components/Pagination';
-import { Search, Briefcase, MapPin, IndianRupee, Calendar, Filter, RotateCcw, ArrowRight, CheckCircle, Building2 } from 'lucide-react';
+import CompanyProfileModal from '../../components/CompanyProfileModal';
+import { Search, Briefcase, MapPin, IndianRupee, Calendar, Filter, RotateCcw, ArrowRight, CheckCircle, Building2, ExternalLink } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function StudentJobs() {
-  const [jobs, setJobs] = useState([]);
+  const [allJobs, setAllJobs] = useState([]);
   const [page, setPage] = useState(0);
   const [size] = useState(10);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalElements, setTotalElements] = useState(0);
   const [appliedJobsList, setAppliedJobsList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const baseURL = api.defaults.baseURL || 'http://localhost:8080';
+  const [selectedCompany, setSelectedCompany] = useState(null);
 
   // Filters
   const [search, setSearch] = useState('');
@@ -27,20 +26,10 @@ export default function StudentJobs() {
   const fetchJobs = async () => {
     setLoading(true);
     try {
-      const data = await studentService.getJobs({
-        title: search,
-        location: locationFilter,
-        department: deptFilter,
-        employmentType: typeFilter,
-        workMode: modeFilter,
-        page: page,
-        size: size
-      });
-      // Filter out any Drafts or Closed just to be completely safe based on spec
+      // Fetch open jobs catalog
+      const data = await studentService.getJobs({ page: 0, size: 100 });
       const openJobs = (data.content || []).filter(j => j.status === 'OPEN');
-      setJobs(openJobs);
-      setTotalPages(data.totalPages || 0);
-      setTotalElements(data.totalElements || 0);
+      setAllJobs(openJobs);
 
       // fetch applications to cross check applied jobs
       try {
@@ -59,16 +48,69 @@ export default function StudentJobs() {
 
   useEffect(() => {
     fetchJobs();
-  }, [page]);
+  }, []);
 
-  useEffect(() => {
-    // using debounced approach for search
-    const delay = setTimeout(() => {
-      setPage(0);
-      fetchJobs();
-    }, 400);
-    return () => clearTimeout(delay);
-  }, [search, locationFilter, deptFilter, typeFilter, modeFilter]);
+  // Multi-field smart filtering engine
+  const filteredJobs = useMemo(() => {
+    return allJobs.filter((job) => {
+      // Search query across Title, Company, Skills, Department, and Description
+      if (search.trim()) {
+        const query = search.toLowerCase().trim();
+        const matchTitle = job.title?.toLowerCase().includes(query);
+        const matchCompany = job.companyName?.toLowerCase().includes(query);
+        const matchSkills = job.requiredSkills?.toLowerCase().includes(query);
+        const matchDept = job.department?.toLowerCase().includes(query);
+        const matchDesc = job.description?.toLowerCase().includes(query);
+        if (!matchTitle && !matchCompany && !matchSkills && !matchDept && !matchDesc) {
+          return false;
+        }
+      }
+
+      // Location Filter
+      if (locationFilter.trim()) {
+        const locQuery = locationFilter.toLowerCase().trim();
+        if (!job.location?.toLowerCase().includes(locQuery)) {
+          return false;
+        }
+      }
+
+      // Department Filter
+      if (deptFilter.trim()) {
+        const deptQuery = deptFilter.toLowerCase().trim();
+        if (!job.department?.toLowerCase().includes(deptQuery)) {
+          return false;
+        }
+      }
+
+      // Employment Type Filter (Internship, Full Time, Part Time)
+      if (typeFilter) {
+        const normFilter = typeFilter.toLowerCase().replace(/[^a-z]/g, '');
+        const normJobType = (job.employmentType || '').toLowerCase().replace(/[^a-z]/g, '');
+        if (!normJobType.includes(normFilter) && !normFilter.includes(normJobType)) {
+          return false;
+        }
+      }
+
+      // Work Mode Filter (On-site, Hybrid, Remote)
+      if (modeFilter) {
+        const normMode = modeFilter.toLowerCase().replace(/[^a-z]/g, '');
+        const normJobMode = (job.workMode || '').toLowerCase().replace(/[^a-z]/g, '');
+        if (!normJobMode.includes(normMode) && !normMode.includes(normJobMode)) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [allJobs, search, locationFilter, deptFilter, typeFilter, modeFilter]);
+
+  // Pagination on filtered subset
+  const totalElements = filteredJobs.length;
+  const totalPages = Math.ceil(totalElements / size) || 1;
+  const paginatedJobs = useMemo(() => {
+    const start = page * size;
+    return filteredJobs.slice(start, start + size);
+  }, [filteredJobs, page, size]);
 
   const resetFilters = () => {
     setSearch('');
@@ -76,7 +118,10 @@ export default function StudentJobs() {
     setDeptFilter('');
     setTypeFilter('');
     setModeFilter('');
+    setPage(0);
   };
+
+  const hasActiveFilters = Boolean(search || locationFilter || deptFilter || typeFilter || modeFilter);
 
   return (
     <motion.div
@@ -106,7 +151,10 @@ export default function StudentJobs() {
                 placeholder="Search job title, company, skills..."
                 className="form-control ps-5 focus-ring focus-ring-primary"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setPage(0);
+                }}
               />
             </div>
           </div>
@@ -122,7 +170,10 @@ export default function StudentJobs() {
                 placeholder="Filter by location..."
                 className="form-control ps-5 focus-ring focus-ring-primary"
                 value={locationFilter}
-                onChange={(e) => setLocationFilter(e.target.value)}
+                onChange={(e) => {
+                  setLocationFilter(e.target.value);
+                  setPage(0);
+                }}
               />
             </div>
           </div>
@@ -134,7 +185,10 @@ export default function StudentJobs() {
               placeholder="Department"
               className="form-control focus-ring focus-ring-primary"
               value={deptFilter}
-              onChange={(e) => setDeptFilter(e.target.value)}
+              onChange={(e) => {
+                setDeptFilter(e.target.value);
+                setPage(0);
+              }}
             />
           </div>
 
@@ -142,7 +196,7 @@ export default function StudentJobs() {
           <div className="col-6 col-md-2">
             <button
               onClick={resetFilters}
-              className="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2"
+              className={`btn w-100 d-flex align-items-center justify-content-center gap-2 ${hasActiveFilters ? 'btn-primary' : 'btn-outline-secondary'}`}
             >
               <RotateCcw size={16} />
               <span>Reset</span>
@@ -151,7 +205,7 @@ export default function StudentJobs() {
         </div>
 
         {/* Dynamic Filter Chips */}
-        <div className="d-flex flex-wrap gap-2 mt-3 pt-3 border-top">
+        <div className="d-flex flex-wrap gap-2 mt-3 pt-3 border-top align-items-center">
           <div className="d-flex align-items-center gap-2 text-secondary fw-semibold me-2" style={{ fontSize: '0.8rem' }}>
             <Filter size={14} /> Quick Filters:
           </div>
@@ -160,9 +214,12 @@ export default function StudentJobs() {
           {['Internship', 'Full Time', 'Part Time'].map(type => (
             <button
               key={type}
-              onClick={() => setTypeFilter(typeFilter === type ? '' : type)}
-              className={`btn btn-sm py-1 px-3 ${typeFilter === type ? 'btn-primary' : 'btn-light border text-secondary'}`}
-              style={{ fontSize: '0.75rem', borderRadius: '20px' }}
+              onClick={() => {
+                setTypeFilter(typeFilter === type ? '' : type);
+                setPage(0);
+              }}
+              className={`btn btn-sm py-1 px-3 ${typeFilter === type ? 'btn-primary shadow-xs fw-semibold' : 'btn-light border text-secondary'}`}
+              style={{ fontSize: '0.78rem', borderRadius: '20px' }}
             >
               {type}
             </button>
@@ -174,13 +231,22 @@ export default function StudentJobs() {
           {['On-site', 'Hybrid', 'Remote'].map(mode => (
             <button
               key={mode}
-              onClick={() => setModeFilter(modeFilter === mode ? '' : mode)}
-              className={`btn btn-sm py-1 px-3 ${modeFilter === mode ? 'btn-primary' : 'btn-light border text-secondary'}`}
-              style={{ fontSize: '0.75rem', borderRadius: '20px' }}
+              onClick={() => {
+                setModeFilter(modeFilter === mode ? '' : mode);
+                setPage(0);
+              }}
+              className={`btn btn-sm py-1 px-3 ${modeFilter === mode ? 'btn-primary shadow-xs fw-semibold' : 'btn-light border text-secondary'}`}
+              style={{ fontSize: '0.78rem', borderRadius: '20px' }}
             >
               {mode}
             </button>
           ))}
+
+          {hasActiveFilters && (
+            <span className="badge bg-primary-subtle text-primary ms-auto px-2.5 py-1 rounded-pill" style={{ fontSize: '0.72rem' }}>
+              {filteredJobs.length} {filteredJobs.length === 1 ? 'role' : 'roles'} found
+            </span>
+          )}
         </div>
       </div>
 
@@ -201,49 +267,60 @@ export default function StudentJobs() {
             </div>
           ))}
         </div>
-      ) : jobs.length === 0 ? (
+      ) : paginatedJobs.length === 0 ? (
         <div className="card text-center p-5 border-0 bg-white shadow-sm" style={{ borderRadius: '12px' }}>
           <div className="d-inline-flex bg-light text-muted rounded-circle p-4 mb-3 mx-auto">
             <Briefcase size={40} />
           </div>
-          <h5 className="fw-bold">No Openings Match the Criteria</h5>
-          <p className="text-muted mx-auto mb-4" style={{ maxWidth: '380px', fontSize: '0.9rem' }}>
-            We could not locate any placement listings that fit your active filtering queries. Try resetting or expanding the search terms.
+          <h5 className="fw-bold text-slate-900">No Openings Match the Criteria</h5>
+          <p className="text-secondary mx-auto mb-4" style={{ maxWidth: '420px', fontSize: '0.9rem' }}>
+            We could not locate any placement listings that fit your active filtering queries. Try resetting or adjusting the search keywords.
           </p>
-          <button onClick={resetFilters} className="btn btn-primary px-4 mx-auto shadow-sm">
-            Refresh Openings
+          <button onClick={resetFilters} className="btn btn-primary px-4 mx-auto shadow-sm" style={{ borderRadius: '8px' }}>
+            Reset Filters & View All
           </button>
         </div>
       ) : (
         <div className="d-flex flex-column gap-3">
-          {jobs.map((job) => {
+          {paginatedJobs.map((job) => {
             const hasApplied = appliedJobsList.includes(job.id);
             return (
-              <div key={job.id} className="card p-4 border-0 card-hover bg-white shadow-sm" style={{ borderRadius: '12px' }}>
+              <div key={job.id} className="card p-4 border-0 card-hover bg-white shadow-sm" style={{ borderRadius: '14px' }}>
                 <div className="row g-3 align-items-start align-items-md-center">
 
                   {/* Left Column Logo */}
                   <div className="col-12 col-md-auto text-start">
-                    <div className="rounded-3 border border-light d-flex align-items-center justify-content-center text-primary" style={{ width: '56px', height: '56px', backgroundColor: '#f8f9fa' }}>
-                      <Building2 size={24} />
+                    <div className="rounded-3 border border-light d-flex align-items-center justify-content-center text-primary shadow-2xs" style={{ width: '56px', height: '56px', backgroundColor: '#F8FAFC' }}>
+                      <Building2 size={26} />
                     </div>
                   </div>
 
                   {/* Mid Column details */}
                   <div className="col-12 col-md flex-grow-1 text-start">
                     <div className="d-flex align-items-center gap-2 flex-wrap mb-1.5">
-                      <h5 className="fw-bold mb-0 text-dark">{job.title}</h5>
-                      <span className="badge bg-primary bg-opacity-10 text-primary border-0">{job.employmentType}</span>
-                      <span className="badge bg-info bg-opacity-10 text-info border-0">{job.workMode}</span>
+                      <Link to={`/student/jobs/${job.id}`} className="text-decoration-none text-dark hover-text-primary">
+                        <h5 className="fw-bold mb-0 text-slate-900" style={{ letterSpacing: '-0.01em' }}>{job.title}</h5>
+                      </Link>
+                      <span className="badge bg-primary bg-opacity-10 text-primary border-0 px-2.5 py-1 rounded-pill">{job.employmentType}</span>
+                      <span className="badge bg-info bg-opacity-10 text-info border-0 px-2.5 py-1 rounded-pill">{job.workMode}</span>
                       {hasApplied && (
-                        <span className="badge bg-success-subtle text-success border border-success d-flex align-items-center gap-1">
+                        <span className="badge bg-success-subtle text-success border border-success d-flex align-items-center gap-1 px-2.5 py-1 rounded-pill">
                           <CheckCircle size={12} /> Applied
                         </span>
                       )}
                     </div>
 
-                    <div className="d-flex align-items-center gap-2 mb-2">
-                      <span className="fw-bold text-secondary" style={{ fontSize: '0.9rem' }}>{job.companyName}</span>
+                    <div className="d-flex align-items-center gap-2 mb-2 flex-wrap">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedCompany({ name: job.companyName, location: job.location })}
+                        className="btn btn-link p-0 text-decoration-none fw-bold text-primary d-inline-flex align-items-center gap-1"
+                        style={{ fontSize: '0.88rem' }}
+                        title="Click to view company details"
+                      >
+                        <span>{job.companyName}</span>
+                        <ExternalLink size={12} className="opacity-75" />
+                      </button>
                       <span className="text-muted">•</span>
                       <span className="text-secondary" style={{ fontSize: '0.85rem' }}>{job.department}</span>
                     </div>
@@ -272,7 +349,7 @@ export default function StudentJobs() {
         </div>
       )}
 
-      {!loading && jobs.length > 0 && (
+      {!loading && filteredJobs.length > 0 && (
         <div className="mt-4">
           <Pagination
             page={page}
@@ -283,6 +360,14 @@ export default function StudentJobs() {
           />
         </div>
       )}
+
+      {/* Company Profile Modal */}
+      <CompanyProfileModal 
+        companyName={selectedCompany?.name}
+        location={selectedCompany?.location}
+        isOpen={Boolean(selectedCompany)}
+        onClose={() => setSelectedCompany(null)}
+      />
     </motion.div>
   );
 }
