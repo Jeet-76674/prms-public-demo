@@ -4,7 +4,19 @@ import { motion } from 'framer-motion';
 import { studentService } from '../../services/studentService';
 import api from '../../services/api';
 import Pagination from '../../components/Pagination';
-import { FolderClosed, Calendar, FileText, Eye, AlertTriangle, Loader2 } from 'lucide-react';
+import { 
+  FolderClosed, 
+  Calendar, 
+  FileText, 
+  Eye, 
+  AlertTriangle, 
+  Loader2, 
+  CheckCircle2, 
+  CheckCircle, 
+  Clock, 
+  XCircle,
+  ArrowRight
+} from 'lucide-react';
 import toast from 'react-hot-toast';
 import { resolvePdfUrl } from '../../utils/pdfHelper';
 
@@ -15,7 +27,6 @@ export default function StudentApplications() {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
-  const baseURL = api.defaults.baseURL || 'http://localhost:8080';
 
   // Modal targets
   const [withdrawTargetId, setWithdrawTargetId] = useState(null);
@@ -46,7 +57,7 @@ export default function StudentApplications() {
     setWithdrawTargetId(id);
   };
 
-  const confirmWithdraw = async () => {
+  const handleWithdrawConfirm = async () => {
     if (!withdrawTargetId) return;
     setWithdrawing(true);
     try {
@@ -60,6 +71,34 @@ export default function StudentApplications() {
       toast.error('Failed to withdraw application');
     } finally {
       setWithdrawing(false);
+    }
+  };
+
+  const handleAcceptOffer = async (id) => {
+    setProcessingOffer(true);
+    try {
+      await studentService.acceptOffer(id);
+      toast.success('Congratulations! Offer Accepted.');
+      setApplications(applications.map(app => app.applicationId === id ? { ...app, applicationStatus: 'OFFER_ACCEPTED' } : app));
+      setOfferDetailsTarget(null);
+    } catch (err) {
+      toast.error('Failed to accept offer');
+    } finally {
+      setProcessingOffer(false);
+    }
+  };
+
+  const handleRejectOffer = async (id) => {
+    setProcessingOffer(true);
+    try {
+      await studentService.rejectOffer(id);
+      toast.success('Offer successfully declined.');
+      setApplications(applications.map(app => app.applicationId === id ? { ...app, applicationStatus: 'OFFER_REJECTED' } : app));
+      setOfferDetailsTarget(null);
+    } catch (err) {
+      toast.error('Failed to decline offer');
+    } finally {
+      setProcessingOffer(false);
     }
   };
 
@@ -251,12 +290,12 @@ export default function StudentApplications() {
                         )}
 
                         {app.applicationStatus === 'OFFER_ACCEPTED' && (
-                          <span className="badge bg-success-subtle text-success border-0 px-2.5 py-1 fw-semibold d-inline-flex align-items-center gap-1">
+                          <span className="badge bg-success-subtle text-success border border-success px-2.5 py-1 fw-semibold d-inline-flex align-items-center gap-1">
                             <CheckCircle2 size={13} /> Offer Accepted
                           </span>
                         )}
                         {app.applicationStatus === 'OFFER_REJECTED' && (
-                          <span className="badge bg-danger-subtle text-danger border-0 px-2.5 py-1 fw-semibold d-inline-flex align-items-center gap-1">
+                          <span className="badge bg-danger-subtle text-danger border border-danger px-2.5 py-1 fw-semibold d-inline-flex align-items-center gap-1">
                             <AlertTriangle size={13} /> Offer Declined
                           </span>
                         )}
@@ -283,39 +322,7 @@ export default function StudentApplications() {
         </div>
       )}
 
-      {/* Handlers for offer actions */}
-      {(() => {
-        const handleAcceptOffer = async (id) => {
-          setProcessingOffer(true);
-          try {
-            await studentService.acceptOffer(id);
-            toast.success('Congratulations! Offer Accepted.');
-            setApplications(applications.map(app => app.applicationId === id ? { ...app, applicationStatus: 'OFFER_ACCEPTED' } : app));
-            setOfferDetailsTarget(null);
-          } catch (err) {
-            toast.error('Failed to accept offer');
-          } finally {
-            setProcessingOffer(false);
-          }
-        };
-
-        const handleRejectOffer = async (id) => {
-          setProcessingOffer(true);
-          try {
-            await studentService.rejectOffer(id);
-            toast.success('Offer successfully declined.');
-            setApplications(applications.map(app => app.applicationId === id ? { ...app, applicationStatus: 'OFFER_REJECTED' } : app));
-            setOfferDetailsTarget(null);
-          } catch (err) {
-            toast.error('Failed to decline offer');
-          } finally {
-            setProcessingOffer(false);
-          }
-        };
-
-        return (
-          <>
-            {/* Withdraw confirmation Modal */}
+      {/* Withdraw confirmation Modal */}
       {withdrawTargetId && (
         <div className="modal fade show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1060 }}>
           <div className="modal-dialog modal-dialog-centered" style={{ maxWidth: '420px' }}>
@@ -329,7 +336,7 @@ export default function StudentApplications() {
               </div>
               <div className="modal-body p-4 text-start bg-white">
                 <p className="text-secondary mb-0" style={{ fontSize: '0.95rem', lineHeight: '1.5' }}>
-                  Are you absolutely sure you want to withdraw this active application? This action is irreversible, and recruiters will be flagged immediately.
+                  Are you absolutely sure you want to withdraw this active application? This action is irreversible, and recruiters will be notified.
                 </p>
               </div>
               <div className="modal-footer bg-light py-3 border-0">
@@ -471,9 +478,6 @@ export default function StudentApplications() {
           </div>
         </div>
       )}
-          </>
-        );
-      })()}
     </motion.div>
   );
 }
