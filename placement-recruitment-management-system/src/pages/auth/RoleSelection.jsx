@@ -313,7 +313,7 @@ export default function RoleSelection() {
           <motion.div variants={itemVariants} className="col-12 col-md-6 col-lg-3">
             <div
               onClick={() => navigate('/vc/login')}
-              className="role-card p-4 h-100 cursor-pointer d-flex flex-column align-items-center text-center"
+              className="role-card role-card-vc p-4 h-100 cursor-pointer d-flex flex-column align-items-center text-center"
               style={{ minHeight: '340px', borderTop: '4px solid #0F172A' }}
             >
               <div className="role-icon-box" style={{ backgroundColor: '#0F172A', color: '#FFFFFF' }}>

@@ -430,6 +430,10 @@ body {
   border-color: #8B5CF6 !important;
 }
 
+.role-card-vc:hover {
+  border-color: #0F172A !important;
+}
+
 .hover-shadow {
   transition: all 0.3s ease !important;
 }
