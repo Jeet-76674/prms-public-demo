@@ -155,28 +155,36 @@ export default function PublicLayout() {
           </div>
 
           <div className="pt-4 d-flex flex-column flex-md-row align-items-center justify-content-between gap-3" style={{ fontSize: '0.825rem', color: '#94A3B8' }}>
-            <div className="d-flex align-items-center flex-wrap gap-2 text-center text-md-start justify-content-center justify-content-md-start">
+            <div className="d-flex align-items-center flex-wrap gap-2.5 text-center text-md-start justify-content-center justify-content-md-start">
               <span>© 2026 PRMS Pro. All rights reserved.</span>
               <span className="d-none d-md-inline text-secondary opacity-50">•</span>
               
-              <div className="d-inline-flex align-items-center gap-1.5 px-3 py-1 rounded-pill my-1 my-md-0 shadow-xs" style={{ backgroundColor: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                <span className="text-slate-400" style={{ fontSize: '0.78rem' }}>Crafted with</span>
-                <Heart size={13} className="text-danger" fill="#EF4444" />
-                <span className="text-slate-400" style={{ fontSize: '0.78rem' }}>& lots of</span>
-                <Coffee size={13} style={{ color: '#F59E0B' }} />
-                <span className="text-slate-400 me-1" style={{ fontSize: '0.78rem' }}>by</span>
-                <a 
-                  href="https://portfolio-mocha-nine-99.vercel.app/" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="fw-bold text-white text-decoration-none px-2.5 py-0.5 rounded-pill transition-all d-inline-flex align-items-center gap-1 shadow-sm"
-                  style={{ backgroundColor: '#2563EB', fontSize: '0.78rem', letterSpacing: '0.02em' }}
-                  title="Visit Jeet Tetar's Developer Portfolio"
-                >
-                  <span>Jeet Tetar</span>
-                  <ExternalLink size={11} className="opacity-75" />
-                </a>
-              </div>
+              <a 
+                href="https://portfolio-mocha-nine-99.vercel.app/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-decoration-none d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill transition-all"
+                style={{ 
+                  backgroundColor: 'rgba(255, 255, 255, 0.05)', 
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#CBD5E1'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.09)';
+                  e.currentTarget.style.borderColor = 'rgba(96, 165, 250, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                }}
+                title="View Jeet Tetar's Portfolio"
+              >
+                <span className="text-slate-400" style={{ fontSize: '0.78rem' }}>Designed & Developed by</span>
+                <span className="fw-semibold text-white d-inline-flex align-items-center gap-1" style={{ fontSize: '0.8rem' }}>
+                  Jeet Tetar
+                  <ExternalLink size={12} style={{ color: '#60A5FA' }} />
+                </span>
+              </a>
             </div>
             
             <div className="d-flex align-items-center gap-3">
