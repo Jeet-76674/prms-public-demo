@@ -272,8 +272,10 @@ export default function StudentProfile() {
                    e.currentTarget.src = 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=250&q=80';
                  }}
                />
-               <h4 className="fw-bold mb-1 text-slate-900">{profileData.firstName} {profileData.lastName}</h4>
-               <p className="text-muted mb-3" style={{ fontSize: '0.9rem' }}>{profileData.department}</p>
+               <h4 className="fw-bold mb-1 text-slate-900">
+                 {(profileData.firstName && profileData.firstName !== 'Alex') ? `${profileData.firstName} ${profileData.lastName || ''}`.trim() : 'Aarav Mehta'}
+               </h4>
+               <p className="text-muted mb-3" style={{ fontSize: '0.9rem' }}>{profileData.department || 'Computer Science & Engineering'}</p>
                <div className="d-flex justify-content-center gap-2 flex-wrap">
                  <span className="badge bg-primary bg-opacity-10 text-primary px-3 py-1.5 rounded-pill fw-semibold">{profileData.enrollmentNumber}</span>
                  <span className="badge bg-success-subtle text-success px-3 py-1.5 rounded-pill fw-semibold">VERIFIED</span>
@@ -346,11 +348,11 @@ export default function StudentProfile() {
                <div className="row g-3">
                  <div className="col-md-6">
                    <span className="text-muted d-block text-xs fw-semibold mb-1">LINKEDIN URL</span>
-                   {profileData?.linkedinUrl ? <a href={profileData.linkedinUrl} target="_blank" rel="noreferrer" className="text-primary fw-medium text-decoration-none text-truncate d-block">{profileData.linkedinUrl}</a> : <span className="text-slate-500">—</span>}
+                   {profileData?.linkedinUrl ? <a href={profileData.linkedinUrl.replace('alex-mercer-demo', 'aarav-mehta-demo')} target="_blank" rel="noreferrer" className="text-primary fw-medium text-decoration-none text-truncate d-block">{profileData.linkedinUrl.replace('alex-mercer-demo', 'aarav-mehta-demo')}</a> : <span className="text-slate-500">—</span>}
                  </div>
                  <div className="col-md-6">
                    <span className="text-muted d-block text-xs fw-semibold mb-1">GITHUB URL</span>
-                   {profileData?.githubUrl ? <a href={profileData.githubUrl} target="_blank" rel="noreferrer" className="text-primary fw-medium text-decoration-none text-truncate d-block">{profileData.githubUrl}</a> : <span className="text-slate-500">—</span>}
+                   {profileData?.githubUrl ? <a href={profileData.githubUrl.replace('alex-mercer-demo', 'aarav-mehta-demo')} target="_blank" rel="noreferrer" className="text-primary fw-medium text-decoration-none text-truncate d-block">{profileData.githubUrl.replace('alex-mercer-demo', 'aarav-mehta-demo')}</a> : <span className="text-slate-500">—</span>}
                  </div>
                  <div className="col-md-4 mt-2">
                    <span className="text-muted d-block text-xs fw-semibold mb-1">PORTFOLIO</span>

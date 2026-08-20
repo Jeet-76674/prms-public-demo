@@ -171,73 +171,65 @@ export default function DashboardLayout() {
   };
 
   return (
-    <div className="d-flex min-vh-100 bg-light" style={{ overflowX: 'hidden' }}>
-      {/* Sidebar Overlay for Mobile */}
-      {sidebarOpen && (
-        <div 
-          className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-lg-none" 
-          style={{ zIndex: 1040 }}
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      {/* Modern High-End Sidebar */}
-      <aside 
-        className={`d-flex flex-column p-3 text-white transition-all position-fixed h-100 ${
-          sidebarOpen ? 'start-0' : 'start-n100'
-        } start-lg-0`}
-        style={{ 
-          width: '260px', 
-          zIndex: 1050,
+    <div className="min-vh-100" style={{ backgroundColor: '#F8FAFC' }}>
+      {/* Fixed Dark Sidebar */}
+      <aside
+        className={`sidebar text-white d-flex flex-column position-fixed h-100 ${
+          sidebarOpen ? 'd-flex' : 'd-none d-md-flex'
+        }`}
+        style={{
+          width: '260px',
+          left: 0,
+          top: 0,
           backgroundColor: '#0F172A',
-          boxShadow: '4px 0 24px 0 rgba(0, 0, 0, 0.08)',
-          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+          borderRight: '1px solid rgba(255, 255, 255, 0.08)',
+          zIndex: 1040,
         }}
       >
-        {/* Brand Header */}
-        <div className="d-flex align-items-center justify-content-between mb-4 px-2 pt-2">
-          <Link to="/" className="d-flex align-items-center gap-2.5 text-decoration-none text-white overflow-hidden">
-            <div className="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center fw-bold shadow-xs flex-shrink-0" style={{ width: '38px', height: '38px', fontSize: '1.2rem' }}>
+        {/* Brand Header - Vertically Centered matching 64px Top Header Bar */}
+        <div className="d-flex justify-content-between align-items-center px-4 py-3 border-bottom" style={{ height: '64px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', flexShrink: 0 }}>
+          <Link to="/" className="d-flex align-items-center gap-3 text-decoration-none text-white">
+            <div className="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center fw-bold shadow-sm" style={{ width: '36px', height: '36px', fontSize: '1.15rem', flexShrink: 0 }}>
               P
             </div>
-            <div className="d-flex flex-column overflow-hidden" style={{ minWidth: 0 }}>
-              <span className="fw-bold tracking-tight text-white lh-1" style={{ fontSize: '1.15rem' }}>PRMS Pro</span>
-              <span className="text-truncate text-secondary" style={{ fontSize: '0.68rem', color: '#94A3B8', marginTop: '3px' }}>
-                {getWorkspaceTitle()}
-              </span>
-            </div>
+            <span className="fw-bold tracking-tight text-white m-0" style={{ fontSize: '1.2rem', whiteSpace: 'nowrap' }}>PRMS Pro</span>
           </Link>
-          <button 
-            className="btn btn-link text-secondary d-lg-none p-1 text-decoration-none" 
-            onClick={() => setSidebarOpen(false)}
-          >
-            <X size={20} />
+          <button className="btn text-white p-0 d-md-none border-0" onClick={() => setSidebarOpen(false)}>
+            <X size={22} />
           </button>
         </div>
 
-        <div className="d-flex flex-column justify-content-between flex-grow-1 overflow-y-auto">
-          {/* Navigation Items */}
-          <nav className="nav flex-column gap-1.5">
-            {activeLinks.map((item) => {
-              const active = isActive(item.path);
+        {/* Inner Sidebar Body with Spaced Padding */}
+        <div className="d-flex flex-column flex-grow-1 p-3">
+          {/* User Workspace Indicator Badge */}
+          <div className="rounded-3 px-3 py-2 mb-3 d-flex align-items-center" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.08)', gap: '8px' }}>
+            <span className="bg-success rounded-circle" style={{ width: '7px', height: '7px', flexShrink: 0 }}></span>
+            <span className="fw-semibold text-uppercase text-truncate" style={{ fontSize: '0.68rem', letterSpacing: '0.04em', color: '#CBD5E1' }}>
+              {getWorkspaceTitle()}
+            </span>
+          </div>
+
+          {/* Navigation Links */}
+          <nav className="nav flex-column flex-grow-1 gap-1.5">
+            {activeLinks.map((link) => {
+              const active = isActive(link.path);
               return (
                 <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`nav-link d-flex align-items-center gap-3 px-3 py-2.5 rounded-3 fw-medium transition-all ${
-                    active 
-                      ? 'bg-primary text-white shadow-xs' 
-                      : 'text-secondary hover-text-white'
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setSidebarOpen(false)}
+                  className={`nav-link text-decoration-none rounded-3 px-3 py-2.5 d-flex align-items-center gap-3 ${
+                    active ? 'bg-primary text-white fw-semibold shadow-sm' : ''
                   }`}
                   style={{
                     fontSize: '0.9rem',
+                    color: active ? '#FFFFFF' : '#CBD5E1',
                     backgroundColor: active ? '#2563EB' : 'transparent',
-                    color: active ? '#FFFFFF' : '#94A3B8'
+                    transition: 'all 0.2s ease',
                   }}
-                  onClick={() => setSidebarOpen(false)}
                 >
-                  {item.icon}
-                  <span>{item.label}</span>
+                  <span style={{ color: active ? '#FFFFFF' : '#94A3B8' }}>{link.icon}</span>
+                  <span>{link.label}</span>
                 </Link>
               );
             })}
