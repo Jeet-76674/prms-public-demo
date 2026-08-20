@@ -9,7 +9,7 @@ import {
   Clock,
   Award,
   Loader2,
-  DollarSign
+  IndianRupee
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Pagination from '../../components/Pagination';
@@ -92,7 +92,7 @@ export default function StudentPlacements() {
                   
                   <div className="d-flex flex-column gap-2 mt-4 pt-3 border-top">
                     <div className="d-flex align-items-center gap-2 text-secondary text-sm">
-                      <DollarSign size={16} />
+                      <IndianRupee size={16} className="text-primary" />
                       <span className="fw-medium text-dark">₹{placement.packageAmount ? placement.packageAmount.toLocaleString('en-IN') : 'N/A'}</span>
                     </div>
                     <div className="d-flex align-items-center gap-2 text-secondary text-sm">

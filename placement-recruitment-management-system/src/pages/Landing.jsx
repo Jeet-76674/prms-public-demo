@@ -56,7 +56,7 @@ export default function Landing() {
 
   const testimonials = [
     { name: 'Rohan Sharma', role: 'Software Engineer at Google', text: 'The PRMS portal was a complete game-changer. I uploaded my profile, applied with a single click, and tracked my shortlisting all the way to my final offer.', img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=120&q=80' },
-    { name: 'Sarah Jenkins', role: 'Talent Acquisition Director', text: 'Posting jobs and screening applicants has never been more straightforward. The eligibility filters saved our HR department over 40 hours of screening time.', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80' }
+    { name: 'Priya Nair', role: 'Talent Acquisition Director', text: 'Posting jobs and screening applicants has never been more straightforward. The eligibility filters saved our HR department over 40 hours of screening time.', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=120&q=80' }
   ];
 
   return (
@@ -116,9 +116,9 @@ export default function Landing() {
                   <div className="d-flex flex-column gap-3">
                     <div className="d-flex align-items-center justify-content-between p-3 bg-light rounded-3">
                       <div className="d-flex align-items-center gap-3">
-                        <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=50&q=80" alt="std" className="rounded-circle" style={{ width: '40px', height: '40px' }} />
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=50&q=80" alt="std" className="rounded-circle" style={{ width: '40px', height: '40px' }} />
                         <div>
-                          <div className="fw-bold" style={{ fontSize: '0.9rem' }}>Alex Mercer</div>
+                          <div className="fw-bold" style={{ fontSize: '0.9rem' }}>Aarav Mehta</div>
                           <div className="text-muted text-xs">CSE • CGPA: 9.2</div>
                         </div>
                       </div>
@@ -127,9 +127,9 @@ export default function Landing() {
 
                     <div className="d-flex align-items-center justify-content-between p-3 bg-light rounded-3">
                       <div className="d-flex align-items-center gap-3">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=50&q=80" alt="std" className="rounded-circle" style={{ width: '40px', height: '40px' }} />
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=50&q=80" alt="std" className="rounded-circle" style={{ width: '40px', height: '40px' }} />
                         <div>
-                          <div className="fw-bold" style={{ fontSize: '0.9rem' }}>Emma Watson</div>
+                          <div className="fw-bold" style={{ fontSize: '0.9rem' }}>Ananya Verma</div>
                           <div className="text-muted text-xs">ECE • CGPA: 8.8</div>
                         </div>
                       </div>

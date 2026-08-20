@@ -14,7 +14,8 @@ import {
   TrendingUp,
   Award,
   Loader2,
-  Building2
+  Building2,
+  MapPin
 } from 'lucide-react';
 import {
   BarChart,
@@ -101,9 +102,9 @@ export default function StudentDashboard() {
             </p>
           </div>
           
-          <div className="d-flex align-items-center gap-2.5 position-relative z-1 flex-wrap flex-sm-nowrap">
+          <div className="d-flex align-items-center gap-3 gap-md-4 position-relative z-1 flex-wrap flex-sm-nowrap">
             {/* CGPA Card */}
-            <div className="d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 border" style={{ backgroundColor: '#F8FAFC', borderColor: '#E2E8F0', minWidth: '150px' }}>
+            <div className="d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 border shadow-xs" style={{ backgroundColor: '#F8FAFC', borderColor: '#E2E8F0', minWidth: '150px' }}>
               <div className="rounded-2 p-2 d-flex align-items-center justify-content-center" style={{ backgroundColor: '#EFF6FF', color: '#2563EB' }}>
                 <TrendingUp size={18} />
               </div>
@@ -117,7 +118,7 @@ export default function StudentDashboard() {
             </div>
 
             {/* Backlogs & Dept Card */}
-            <div className="d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 border" style={{ backgroundColor: '#F8FAFC', borderColor: '#E2E8F0', minWidth: '175px' }}>
+            <div className="d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 border shadow-xs" style={{ backgroundColor: '#F8FAFC', borderColor: '#E2E8F0', minWidth: '185px' }}>
               <div className="rounded-2 p-2 d-flex align-items-center justify-content-center" style={{ backgroundColor: (profile?.activeBacklogs || 0) > 0 ? '#FEF2F2' : '#F0FDF4', color: (profile?.activeBacklogs || 0) > 0 ? '#DC2626' : '#16A34A' }}>
                 <Award size={18} />
               </div>
@@ -257,10 +258,10 @@ export default function StudentDashboard() {
       </div>
 
       {/* Recommended Openings */}
-      <div className="card p-4 border-0 bg-white">
+      <div className="card p-4 border-0 bg-white shadow-xs" style={{ borderRadius: '16px' }}>
         <div className="d-flex justify-content-between align-items-center mb-4">
           <div>
-            <h5 className="fw-bold text-secondary mb-1">Recommended Placements</h5>
+            <h5 className="fw-bold text-slate-900 mb-1">Recommended Placements</h5>
             <p className="text-muted text-xs mb-0">Open roles matching your specific skill and CGPA thresholds.</p>
           </div>
           <Link to="/student/jobs" className="text-primary text-decoration-none fw-semibold d-flex align-items-center gap-1" style={{ fontSize: '0.9rem' }}>
@@ -269,34 +270,37 @@ export default function StudentDashboard() {
           </Link>
         </div>
 
-        <div className="row g-4">
+        <div className="row g-3">
           {jobs.map((job) => (
             <div key={job.id} className="col-12 col-md-4">
-              <div className="card h-100 p-3 card-hover border-light">
-                <div className="d-flex align-items-center gap-3 mb-3">
-                  {job.logo ? (
-                    <img src={job.logo} alt={`${job.company} logo`} className="rounded-3 border" style={{ width: '48px', height: '48px', objectFit: 'cover' }} />
-                  ) : (
-                    <div className="rounded-3 border bg-light d-flex align-items-center justify-content-center" style={{ width: '48px', height: '48px' }}>
-                      <Building2 size={24} className="text-primary" />
+              <div className="card h-100 p-3 card-hover border bg-white position-relative d-flex flex-column" style={{ borderRadius: '14px', borderColor: '#E2E8F0' }}>
+                <div className="d-flex align-items-start justify-content-between mb-2">
+                  <div className="d-flex align-items-center gap-2.5">
+                    <div className="rounded-3 border d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: '42px', height: '42px', backgroundColor: '#F8FAFC', color: '#1E293B' }}>
+                      <Building2 size={22} className="text-slate-700" />
                     </div>
-                  )}
-                  <div>
-                    <h6 className="fw-bold mb-1 text-truncate" style={{ maxWidth: '160px' }}>{job.title}</h6>
-                    <small className="text-muted">{job.company}</small>
+                    <h6 className="fw-bold mb-0 text-slate-900 text-truncate" style={{ fontSize: '1rem', maxWidth: '170px' }} title={job.title}>
+                      {job.title}
+                    </h6>
                   </div>
+                  <span className="badge bg-light text-primary border-0 fw-semibold px-2 py-1" style={{ fontSize: '0.65rem', letterSpacing: '0.04em' }}>
+                    NEW
+                  </span>
                 </div>
-                <div className="d-flex flex-wrap gap-1.5 mb-3">
-                  <span className="badge bg-light text-secondary border">{job.location}</span>
-                  <span className="badge bg-light text-secondary border">{job.workMode}</span>
-                  <span className="badge bg-primary bg-opacity-10 text-primary border-0">{job.employmentType}</span>
+
+                <div className="d-flex align-items-center gap-2 text-secondary mb-3 mt-1" style={{ fontSize: '0.8rem' }}>
+                  <span className="d-inline-flex align-items-center gap-1 text-truncate">
+                    <MapPin size={13} className="text-muted flex-shrink-0" /> {job.location || 'Pune'} | {job.workMode || 'On-Site'}
+                  </span>
+                  <span className="text-muted opacity-50">•</span>
+                  <span className="d-inline-flex align-items-center gap-1 flex-shrink-0">
+                    <Briefcase size={13} className="text-muted" /> {job.employmentType || 'Full-Time'}
+                  </span>
                 </div>
-                <div className="d-flex align-items-center justify-content-between mt-auto pt-3 border-top">
-                  <span className="fw-bold text-primary" style={{ fontSize: '0.9rem' }}>{job.salary}</span>
-                  <Link to={`/student/jobs/${job.id}`} className="btn btn-primary btn-sm px-3 py-1" style={{ borderRadius: '6px' }}>
-                    View details
-                  </Link>
-                </div>
+
+                <Link to={`/student/jobs/${job.id}`} className="btn btn-primary w-100 py-2 fw-semibold mt-auto d-flex align-items-center justify-content-center" style={{ borderRadius: '8px', fontSize: '0.9rem' }}>
+                  View details
+                </Link>
               </div>
             </div>
           ))}

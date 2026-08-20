@@ -256,10 +256,10 @@ public class DemoDataServiceImpl implements DemoDataService {
 
         // 4. Students
 
-        // 4a. Alex Mercer (Primary Student Demo - CSE 9.2 CGPA)
+        // 4a. Aarav Mehta (Primary Student Demo - CSE 9.2 CGPA)
         User std1User = new User();
-        std1User.setFirstName("Alex");
-        std1User.setLastName("Mercer");
+        std1User.setFirstName("Aarav");
+        std1User.setLastName("Mehta");
         std1User.setEmail("student.demo@indus.edu");
         std1User.setPhoneNumber("6660001111");
         std1User.setPassword(commonPassword);
@@ -290,8 +290,8 @@ public class DemoDataServiceImpl implements DemoDataService {
         std1.setSoftSkills("Leadership, Team Collaboration, Problem Solving, Communication");
         std1.setCertifications("Oracle Certified Professional Java SE, AWS Certified Solutions Architect Associate");
         std1.setAchievements("1st Place in University Hackathon 2025, Top 5% on LeetCode");
-        std1.setLinkedinUrl("https://linkedin.com/in/alex-mercer-demo");
-        std1.setGithubUrl("https://github.com/alex-mercer-demo");
+        std1.setLinkedinUrl("https://linkedin.com/in/aarav-mehta-demo");
+        std1.setGithubUrl("https://github.com/aarav-mehta-demo");
         std1.setResumeUrl("uploads/samples/sample-resume.pdf");
         std1.setPlacementStatus("SHORTLISTED");
         std1.setPreferredJobLocation("Bengaluru / Pune");
@@ -300,10 +300,10 @@ public class DemoDataServiceImpl implements DemoDataService {
         std1.setResumeUploaded(true);
         studentProfileRepository.save(std1);
 
-        // 4b. Emma Watson (ECE 8.8 CGPA - Placed)
+        // 4b. Ananya Verma (ECE 8.8 CGPA - Placed)
         User std2User = new User();
-        std2User.setFirstName("Emma");
-        std2User.setLastName("Watson");
+        std2User.setFirstName("Ananya");
+        std2User.setLastName("Verma");
         std2User.setEmail("emma.w@indus.edu");
         std2User.setPhoneNumber("6660002222");
         std2User.setPassword(commonPassword);
@@ -538,7 +538,7 @@ public class DemoDataServiceImpl implements DemoDataService {
 
         // 6. Job Applications across exact stages
 
-        // 6a. Alex Mercer -> Full Stack Java Developer (SHORTLISTED)
+        // 6a. Aarav Mehta -> Full Stack Java Developer (SHORTLISTED)
         JobApplication app1 = new JobApplication();
         app1.setStudent(std1);
         app1.setJob(job1);
@@ -546,7 +546,7 @@ public class DemoDataServiceImpl implements DemoDataService {
         app1.setCoverLetter("Excited to apply for Java Developer position with hands-on Spring Boot project expertise.");
         jobApplicationRepository.save(app1);
 
-        // 6b. Alex Mercer -> Cloud DevOps Engineer (INTERVIEW_SCHEDULED)
+        // 6b. Aarav Mehta -> Cloud DevOps Engineer (INTERVIEW_SCHEDULED)
         JobApplication app2 = new JobApplication();
         app2.setStudent(std1);
         app2.setJob(job2);
@@ -558,7 +558,7 @@ public class DemoDataServiceImpl implements DemoDataService {
         app2.setCoverLetter("Passionate about cloud architecture and Kubernetes orchestration.");
         jobApplicationRepository.save(app2);
 
-        // 6c. Emma Watson -> Frontend React Specialist (OFFER_ACCEPTED)
+        // 6c. Ananya Verma -> Frontend React Specialist (OFFER_ACCEPTED)
         JobApplication app3 = new JobApplication();
         app3.setStudent(std2);
         app3.setJob(job3);
@@ -651,7 +651,7 @@ public class DemoDataServiceImpl implements DemoDataService {
                 "role", "STUDENT",
                 "email", "student.demo@indus.edu",
                 "password", "Demo@1234",
-                "name", "Alex Mercer",
+                "name", "Aarav Mehta",
                 "details", "Final Year CSE (9.2 CGPA)"
         ));
 

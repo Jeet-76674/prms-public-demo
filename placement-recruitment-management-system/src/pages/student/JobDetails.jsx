@@ -7,7 +7,7 @@ import {
   ArrowLeft,
   Briefcase,
   MapPin,
-  DollarSign,
+  IndianRupee,
   Calendar,
   Layers,
   GraduationCap,
@@ -184,8 +184,8 @@ export default function StudentJobDetails() {
             {/* Salary deadline details list */}
             <div className="d-flex flex-column gap-3 mb-4">
               <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
-                <span className="text-muted d-flex align-items-center gap-2" style={{ fontSize: '0.85rem' }}><DollarSign size={16} /> Salary:</span>
-                <strong className="text-dark" style={{ fontSize: '0.9rem' }}>₹{job.minimumSalary} - ₹{job.maximumSalary}</strong>
+                <span className="text-muted d-flex align-items-center gap-2" style={{ fontSize: '0.85rem' }}><IndianRupee size={16} /> Salary:</span>
+                <strong className="text-dark" style={{ fontSize: '0.9rem' }}>₹{job.minimumSalary ? Number(job.minimumSalary).toLocaleString('en-IN') : '0'} - ₹{job.maximumSalary ? Number(job.maximumSalary).toLocaleString('en-IN') : '0'}</strong>
               </div>
               <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
                 <span className="text-muted d-flex align-items-center gap-2" style={{ fontSize: '0.85rem' }}><Calendar size={16} /> Deadline:</span>

@@ -145,7 +145,7 @@ export default function RoleSelection() {
                     <ArrowRight size={13} className="text-muted" />
                   )}
                 </div>
-                <div className="text-muted text-truncate" style={{ fontSize: '0.72rem' }}>Alex Mercer (9.2 CGPA)</div>
+                <div className="text-muted text-truncate" style={{ fontSize: '0.72rem' }}>Aarav Mehta (9.2 CGPA)</div>
               </button>
             </div>
 

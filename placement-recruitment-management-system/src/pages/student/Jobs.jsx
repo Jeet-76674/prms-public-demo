@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { studentService } from '../../services/studentService';
 import api from '../../services/api';
 import Pagination from '../../components/Pagination';
-import { Search, Briefcase, MapPin, DollarSign, Calendar, Filter, RotateCcw, ArrowRight, CheckCircle, Building2 } from 'lucide-react';
+import { Search, Briefcase, MapPin, IndianRupee, Calendar, Filter, RotateCcw, ArrowRight, CheckCircle, Building2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function StudentJobs() {
@@ -250,7 +250,7 @@ export default function StudentJobs() {
 
                     <div className="d-flex flex-wrap gap-3 text-secondary" style={{ fontSize: '0.85rem' }}>
                       <span className="d-flex align-items-center gap-1"><MapPin size={15} /> {job.location}</span>
-                      <span className="d-flex align-items-center gap-1"><DollarSign size={15} /> ₹{job.minimumSalary} - ₹{job.maximumSalary}</span>
+                      <span className="d-flex align-items-center gap-1"><IndianRupee size={15} /> ₹{job.minimumSalary ? Number(job.minimumSalary).toLocaleString('en-IN') : '0'} - ₹{job.maximumSalary ? Number(job.maximumSalary).toLocaleString('en-IN') : '0'}</span>
                       <span className="d-flex align-items-center gap-1"><Calendar size={15} /> Deadline: {job.applicationDeadline}</span>
                     </div>
                   </div>

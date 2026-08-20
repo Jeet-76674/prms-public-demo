@@ -228,9 +228,9 @@ export default function StudentProfile() {
 
   if (loading) {
     return (
-      <div className="d-flex flex-column align-items-center justify-content-center py-5">
-        <Loader2 className="spinner-border text-primary border-0" size={40} style={{ animation: 'spin 1s linear infinite' }} />
-        <h6 className="mt-3 text-muted">Retrieving profile parameters...</h6>
+      <div className="d-flex flex-column align-items-center justify-content-center py-5" style={{ minHeight: '50vh' }}>
+        <Loader2 className="text-primary animate-spin mb-3" size={42} />
+        <h6 className="text-muted fw-medium">Retrieving candidate profile...</h6>
       </div>
     );
   }
@@ -245,35 +245,22 @@ export default function StudentProfile() {
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="container-fluid p-0">
 
-      {/* Onboarding status card */}
-      <div className="card border-0 mb-4 bg-light p-3">
-        <div className="d-flex align-items-center gap-3">
-          <div className="bg-primary bg-opacity-10 text-primary p-2.5 rounded-3">
-            <CheckCircle size={24} />
-          </div>
-          <div>
-            <h6 className="fw-bold mb-1">Academic Profile Verification Check</h6>
-            <p className="text-secondary text-xs mb-0">Fill all mandatory sections to unlock placements. Academic fields cannot contain backlogs beyond threshold bounds.</p>
-          </div>
-        </div>
-      </div>
-
       {!isEditing && profileData ? (
         <div className="row g-4">
-          <div className="col-lg-12 mb-3 text-end">
-            <button onClick={() => setIsEditing(true)} className="btn btn-primary shadow-sm px-4">
+          <div className="col-lg-12 mb-2 text-end">
+            <button onClick={() => setIsEditing(true)} className="btn btn-primary shadow-sm px-4 fw-semibold" style={{ borderRadius: '8px' }}>
               Edit Profile
             </button>
           </div>
           {/* Read-Only Layout */}
           <div className="col-lg-4">
-            <div className="card border-0 p-4 text-center bg-white shadow-sm h-100">
-               <img src={resolveResumeUrl(profileData.profileImageUrl || profileData.profilePic) || 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=150&q=80'} alt="Profile" className="rounded-circle border mx-auto mb-3" style={{ width: '120px', height: '120px', objectFit: 'cover' }} />
-               <h4 className="fw-bold mb-1">{profileData.firstName} {profileData.lastName}</h4>
-               <p className="text-muted mb-3">{profileData.department}</p>
+            <div className="card border-0 p-4 text-center bg-white shadow-sm h-100" style={{ borderRadius: '16px' }}>
+               <img src={resolveResumeUrl(profileData.profileImageUrl || profileData.profilePic) || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80'} alt="Profile" className="rounded-circle border mx-auto mb-3" style={{ width: '120px', height: '120px', objectFit: 'cover' }} />
+               <h4 className="fw-bold mb-1 text-slate-900">{profileData.firstName} {profileData.lastName}</h4>
+               <p className="text-muted mb-3" style={{ fontSize: '0.9rem' }}>{profileData.department}</p>
                <div className="d-flex justify-content-center gap-2 flex-wrap">
-                 <span className="badge bg-primary bg-opacity-10 text-primary">{profileData.enrollmentNumber}</span>
-                 <span className="badge bg-success-subtle text-success">Verified</span>
+                 <span className="badge bg-primary bg-opacity-10 text-primary px-3 py-1.5 rounded-pill fw-semibold">{profileData.enrollmentNumber}</span>
+                 <span className="badge bg-success-subtle text-success px-3 py-1.5 rounded-pill fw-semibold">VERIFIED</span>
                </div>
             </div>
           </div>
@@ -388,7 +375,7 @@ export default function StudentProfile() {
             <div className="card border-0 p-4 text-center bg-white shadow-sm mb-4">
               <div className="position-relative d-inline-block mx-auto mb-3">
                 <img
-                  src={resolveResumeUrl(profilePic) || 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=150&q=80'}
+                  src={resolveResumeUrl(profilePic) || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80'}
                   alt="Profile"
                   className="rounded-circle border"
                   style={{ width: '110px', height: '110px', objectFit: 'cover' }}
