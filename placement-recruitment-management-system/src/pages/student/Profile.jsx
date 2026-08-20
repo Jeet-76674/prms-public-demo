@@ -16,6 +16,7 @@ import {
   CheckCircle,
   AlertTriangle
 } from 'lucide-react';
+import { resolvePdfUrl } from '../../utils/pdfHelper';
 
 export default function StudentProfile() {
   const { setProfileCompletedState } = useAuth();
@@ -112,11 +113,7 @@ export default function StudentProfile() {
   };
 
   const resolveResumeUrl = (url) => {
-    if (!url) return null;
-    if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('blob:')) return url;
-    const cleanPath = url.startsWith('/') ? url : `/${url}`;
-    const targetPath = cleanPath.startsWith('/api/') ? cleanPath.replace('/api/', '/') : cleanPath;
-    return targetPath;
+    return resolvePdfUrl(url, 'resume');
   };
 
   const handleNext = async () => {

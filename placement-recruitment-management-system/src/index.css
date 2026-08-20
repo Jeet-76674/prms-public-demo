@@ -72,8 +72,13 @@ body {
 
 .card-hover:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.04), 0 4px 6px -4px rgba(0, 0, 0, 0.04) !important;
-  border-color: #CBD5E1 !important;
+  box-shadow: 0 12px 24px -6px rgba(37, 99, 235, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04) !important;
+  border-color: #93C5FD !important;
+}
+
+.card-hover:hover .card-hover-text {
+  color: #2563EB !important;
+  transition: color 0.15s ease-in-out;
 }
 
 /* Button Styling */

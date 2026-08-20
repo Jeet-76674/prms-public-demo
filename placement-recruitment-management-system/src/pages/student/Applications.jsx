@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { studentService } from '../../services/studentService';
 import api from '../../services/api';
 import Pagination from '../../components/Pagination';
 import { FolderClosed, Calendar, FileText, Eye, AlertTriangle, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { resolvePdfUrl } from '../../utils/pdfHelper';
 
 export default function StudentApplications() {
+  const navigate = useNavigate();
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -34,7 +36,7 @@ export default function StudentApplications() {
       setTotalPages(data.totalPages || 0);
       setTotalElements(data.totalElements || 0);
     } catch (err) {
-      toast.error('Failed to load applications pipeline.');
+      toast.error('Failed to load candidate applications');
     } finally {
       setLoading(false);
     }
@@ -44,7 +46,8 @@ export default function StudentApplications() {
     setWithdrawTargetId(id);
   };
 
-  const handleWithdrawConfirm = async () => {
+  const confirmWithdraw = async () => {
+    if (!withdrawTargetId) return;
     setWithdrawing(true);
     try {
       await studentService.withdrawApplication(withdrawTargetId);
@@ -78,25 +81,24 @@ export default function StudentApplications() {
   if (loading) {
     return (
       <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
-        <Loader2 className="spinner" size={32} />
+        <Loader2 className="animate-spin text-primary" size={36} />
       </div>
     );
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="container py-4"
-    >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="container-fluid p-0">
+      
+      {/* Title Header */}
       <div className="mb-4">
-        <h3 className="fw-bold text-dark mb-1">My Pipeline</h3>
-        <p className="text-secondary mb-0">Track open interview pipelines, review submission cover letters, and manage active status parameters.</p>
+        <h3 className="fw-bold mb-1 text-slate-900" style={{ letterSpacing: '-0.02em' }}>My Pipeline</h3>
+        <p className="text-secondary mb-0" style={{ fontSize: '0.9rem' }}>
+          Track open interview pipelines, review submission cover letters, and manage active status parameters.
+        </p>
       </div>
 
       {applications.length === 0 ? (
-        <div className="card text-center p-5 border-0 bg-white shadow-sm" style={{ borderRadius: '16px' }}>
+        <div className="card p-5 border-0 text-center bg-white shadow-sm" style={{ borderRadius: '16px' }}>
           <div className="d-inline-flex bg-light text-muted rounded-circle p-4 mb-3 mx-auto">
             <FolderClosed size={40} />
           </div>
@@ -107,23 +109,32 @@ export default function StudentApplications() {
           <Link to="/student/jobs" className="btn btn-primary px-4 shadow-sm mx-auto">Browse Openings</Link>
         </div>
       ) : (
-        <div className="row g-4 text-start">
+        <div className="row g-3 text-start">
           {applications.map((app) => {
             const statusInfo = getStatusBadge(app.applicationStatus);
             const canWithdraw = app.applicationStatus === 'APPLIED' || app.applicationStatus === 'UNDER_REVIEW';
 
             return (
               <div key={app.applicationId} className="col-12">
-                <div className="card p-4 border-0 bg-white shadow-sm" style={{ borderRadius: '16px' }}>
+                <div 
+                  onClick={(e) => {
+                    if (!e.target.closest('button, a, .cursor-pointer')) {
+                      navigate(`/student/jobs/${app.jobId}`);
+                    }
+                  }}
+                  className="card p-3 px-4 border bg-white shadow-xs card-hover transition-all position-relative" 
+                  style={{ borderRadius: '14px', cursor: 'pointer', borderColor: '#E2E8F0' }}
+                  title="Click to view role requirements and job details"
+                >
                   
                   {/* Status header row */}
-                  <div className="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom border-light flex-wrap gap-2">
+                  <div className="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-light flex-wrap gap-2">
                     <div className="d-flex align-items-center gap-2">
-                      <Calendar size={16} className="text-muted" />
+                      <Calendar size={15} className="text-muted" />
                       <span className="text-secondary text-xs">Applied on: <strong>{new Date(app.appliedAt).toLocaleDateString()}</strong></span>
                     </div>
                     <span 
-                      className={`badge border ${statusInfo.bgClass}`} 
+                      className={`badge border ${statusInfo.bgClass} px-2.5 py-1 fw-semibold`} 
                       style={statusInfo.customStyle || (statusInfo.color ? { color: statusInfo.color, borderColor: statusInfo.color } : {})}
                     >
                       {statusInfo.text}
@@ -131,32 +142,39 @@ export default function StudentApplications() {
                   </div>
 
                   {/* Body Info row */}
-                  <div className="row g-3">
-                    <div className="col-12 col-md-8">
-                      <Link to={`/student/jobs/${app.jobId}`} className="text-decoration-none">
-                        <h5 className="fw-bold text-dark mb-1 card-hover-text">{app.jobTitle}</h5>
+                  <div className="row g-3 align-items-center">
+                    <div className="col-12 col-md-7">
+                      <Link to={`/student/jobs/${app.jobId}`} className="text-decoration-none" onClick={(e) => e.stopPropagation()}>
+                        <h5 className="fw-bold text-slate-900 mb-1 card-hover-text" style={{ fontSize: '1.05rem', letterSpacing: '-0.01em' }}>{app.jobTitle}</h5>
                       </Link>
                       
                       {/* Attachments details list */}
-                      <div className="d-flex flex-wrap gap-4 mt-3 text-muted" style={{ fontSize: '0.85rem' }}>
-                        {app.resumeUrl ? (
-                          <a href={app.resumeUrl.startsWith('http') ? app.resumeUrl : `${api.defaults.baseURL || ''}${app.resumeUrl.startsWith('/') ? '' : '/'}${app.resumeUrl}`} target="_blank" rel="noopener noreferrer" className="d-flex align-items-center gap-1 text-decoration-none cursor-pointer text-secondary">
-                            <FileText size={16} className="text-primary" />
-                            <span className="fw-medium">View Resume</span>
-                          </a>
-                        ) : (
-                          <span className="d-flex align-items-center gap-1 text-muted">
-                            <FileText size={16} /> No Resume
-                          </span>
-                        )}
+                      <div className="d-flex flex-wrap gap-3 mt-2 text-muted" style={{ fontSize: '0.825rem' }}>
+                        <a 
+                          href={resolvePdfUrl(app.resumeUrl, 'resume')} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          onClick={(e) => e.stopPropagation()}
+                          className="d-flex align-items-center gap-1.5 text-decoration-none cursor-pointer text-secondary hover-text-primary fw-medium"
+                        >
+                          <FileText size={15} className="text-primary" />
+                          <span>View Resume</span>
+                        </a>
                         {app.coverLetter ? (
-                          <span className="d-flex align-items-center gap-1 cursor-pointer text-secondary" onClick={() => setCoverLetterTarget(app.coverLetter)} style={{ cursor: 'pointer' }}>
-                            <Eye size={16} className="text-primary" />
-                            <span className="fw-medium">View Cover Letter</span>
+                          <span 
+                            className="d-flex align-items-center gap-1.5 cursor-pointer text-secondary hover-text-primary fw-medium" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCoverLetterTarget(app.coverLetter);
+                            }} 
+                            style={{ cursor: 'pointer' }}
+                          >
+                            <Eye size={15} className="text-primary" />
+                            <span>View Cover Letter</span>
                           </span>
                         ) : (
                           <span className="d-flex align-items-center gap-1 text-muted">
-                            <Eye size={16} /> No Cover Letter
+                            <Eye size={15} /> No Cover Letter
                           </span>
                         )}
                       </div>

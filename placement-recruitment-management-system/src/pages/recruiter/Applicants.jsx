@@ -6,6 +6,7 @@ import api from '../../services/api';
 import { ArrowLeft, Users, FileText, Eye, Loader2, Calendar, ChevronDown } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Pagination from '../../components/Pagination';
+import { resolvePdfUrl } from '../../utils/pdfHelper';
 
 export default function RecruiterApplicants() {
   const { id } = useParams();
@@ -360,7 +361,7 @@ export default function RecruiterApplicants() {
                               <div className="d-flex flex-column gap-2">
                                 {app.resumeUrl ? (
                                   <a
-                                    href={app.resumeUrl.startsWith('http') ? app.resumeUrl : `${api.defaults.baseURL}${app.resumeUrl}`}
+                                    href={resolvePdfUrl(app.resumeUrl, 'resume')}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-decoration-none text-primary fw-semibold d-inline-flex align-items-center gap-1 cursor-pointer"

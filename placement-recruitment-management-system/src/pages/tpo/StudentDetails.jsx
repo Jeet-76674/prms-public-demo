@@ -19,8 +19,12 @@ import {
   Github,
   Globe,
   Award,
-  PowerOff
+  PowerOff,
+  ShieldCheck,
+  Building2,
+  Calendar
 } from 'lucide-react';
+import { resolvePdfUrl } from '../../utils/pdfHelper';
 
 export default function TpoStudentDetails() {
   const { id } = useParams();
@@ -174,7 +178,7 @@ export default function TpoStudentDetails() {
               {student.resumeUrl && (
                 <div className="d-flex align-items-center gap-3 text-secondary text-sm mt-1">
                   <FileText size={16} className="text-danger" />
-                  <a href={student.resumeUrl.startsWith('http') ? student.resumeUrl : `${api.defaults.baseURL}${student.resumeUrl}`} target="_blank" rel="noreferrer" className="text-danger text-decoration-none text-truncate">
+                  <a href={resolvePdfUrl(student.resumeUrl, 'resume')} target="_blank" rel="noreferrer" className="text-danger text-decoration-none text-truncate fw-semibold">
                     View Resume
                   </a>
                 </div>
