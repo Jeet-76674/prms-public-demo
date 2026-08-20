@@ -113,32 +113,46 @@ export default function TpoPlacements() {
   };
 
   const handleConvert = async (app) => {
-    // Show a loading state if desired, or just fetch directly
     let packageAmt = '';
     let loc = '';
     let empType = 'Full Time';
+    let recId = app.recruiterId || null;
     const today = new Date().toISOString().split('T')[0];
 
     try {
-      const jobDetails = await tpoService.getJobById(app.jobId);
-      packageAmt = jobDetails.maximumSalary || jobDetails.minimumSalary || '';
-      loc = jobDetails.location || '';
-      
-      // Map job employment type to placement employment type format
-      if (jobDetails.employmentType) {
-        if (jobDetails.employmentType === 'FULL_TIME') empType = 'Full Time';
-        else if (jobDetails.employmentType === 'INTERNSHIP') empType = 'Internship';
-        else if (jobDetails.employmentType === 'CONTRACT') empType = 'Contract';
-        else if (jobDetails.employmentType === 'PART_TIME') empType = 'Part Time';
+      const [jobDetails, recruitersData] = await Promise.all([
+        tpoService.getJobById(app.jobId).catch(() => null),
+        tpoService.getRecruiters({ size: 100 }).catch(() => ({ content: [] }))
+      ]);
+
+      if (jobDetails) {
+        packageAmt = jobDetails.maximumSalary || jobDetails.minimumSalary || '';
+        loc = jobDetails.location || '';
+        if (jobDetails.employmentType) {
+          if (jobDetails.employmentType === 'FULL_TIME') empType = 'Full Time';
+          else if (jobDetails.employmentType === 'INTERNSHIP') empType = 'Internship';
+          else if (jobDetails.employmentType === 'CONTRACT') empType = 'Contract';
+          else if (jobDetails.employmentType === 'PART_TIME') empType = 'Part Time';
+        }
+      }
+
+      if (!recId && recruitersData?.content) {
+        const targetCompany = (app.companyName || jobDetails?.companyName || '').toLowerCase().trim();
+        const matched = recruitersData.content.find(
+          r => r.companyName?.toLowerCase().trim() === targetCompany || targetCompany.includes(r.companyName?.toLowerCase().trim())
+        );
+        if (matched) recId = matched.id;
+        else if (recruitersData.content.length > 0) recId = recruitersData.content[0].id;
       }
     } catch(err) {
-      console.error('Failed to fetch job details for pre-filling', err);
+      console.error('Failed to fetch job or recruiter details for pre-filling', err);
     }
 
     setNewPlacement(prev => ({
       ...prev,
       studentId: app.studentId,
       jobId: app.jobId,
+      recruiterId: recId || '',
       jobTitle: app.jobTitle || '',
       companyName: app.companyName || '',
       packageAmount: packageAmt,
@@ -181,21 +195,42 @@ export default function TpoPlacements() {
     e.preventDefault();
     setCreating(true);
     try {
+      let resolvedRecruiterId = newPlacement.recruiterId;
+
+      // If recruiterId is still missing, auto-match from active recruiters
+      if (!resolvedRecruiterId) {
+        try {
+          const recruitersData = await tpoService.getRecruiters({ size: 100 });
+          if (recruitersData?.content?.length > 0) {
+            const targetCompany = (newPlacement.companyName || '').toLowerCase().trim();
+            const matched = recruitersData.content.find(
+              r => r.companyName?.toLowerCase().trim() === targetCompany || targetCompany.includes(r.companyName?.toLowerCase().trim())
+            );
+            resolvedRecruiterId = matched ? matched.id : recruitersData.content[0].id;
+          }
+        } catch (rErr) {
+          console.warn('Could not auto-lookup recruiter', rErr);
+        }
+      }
+
       // parse numeric fields
       const payload = {
         ...newPlacement,
         studentId: parseInt(newPlacement.studentId, 10),
         jobId: parseInt(newPlacement.jobId, 10),
+        recruiterId: resolvedRecruiterId ? parseInt(resolvedRecruiterId, 10) : undefined,
         packageAmount: parseFloat(newPlacement.packageAmount),
         joiningDate: newPlacement.joiningDate || null,
         offerDate: newPlacement.offerDate || null
       };
+
       await tpoService.createPlacement(payload);
       toast.success('Placement created successfully');
       setShowCreateModal(false);
       setNewPlacement({
         studentId: '',
         jobId: '',
+        recruiterId: '',
         companyName: '',
         jobTitle: '',
         packageAmount: '',
