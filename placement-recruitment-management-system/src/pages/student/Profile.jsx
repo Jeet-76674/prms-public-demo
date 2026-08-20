@@ -116,6 +116,16 @@ export default function StudentProfile() {
     return resolvePdfUrl(url, 'resume');
   };
 
+  const resolveProfileImageUrl = (url) => {
+    if (!url || typeof url !== 'string' || url.includes('.pdf') || url.includes('sample-resume')) {
+      return 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=250&q=80';
+    }
+    if (url.startsWith('http') || url.startsWith('data:image')) {
+      return url;
+    }
+    return `${api.defaults.baseURL}/${url.replace(/^\/+/, '')}`;
+  };
+
   const handleNext = async () => {
     const fieldsToValidate = getFieldsForTab(activeTab);
 
@@ -252,7 +262,16 @@ export default function StudentProfile() {
           {/* Read-Only Layout */}
           <div className="col-lg-4">
             <div className="card border-0 p-4 text-center bg-white shadow-sm h-100" style={{ borderRadius: '16px' }}>
-               <img src={resolveResumeUrl(profileData.profileImageUrl || profileData.profilePic) || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80'} alt="Profile" className="rounded-circle border mx-auto mb-3" style={{ width: '120px', height: '120px', objectFit: 'cover' }} />
+               <img 
+                 src={resolveProfileImageUrl(profileData.profileImageUrl || profileData.profilePic)} 
+                 alt="Candidate Profile" 
+                 className="rounded-circle border mx-auto mb-3 shadow-xs" 
+                 style={{ width: '120px', height: '120px', objectFit: 'cover' }} 
+                 onError={(e) => {
+                   e.currentTarget.onerror = null;
+                   e.currentTarget.src = 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=250&q=80';
+                 }}
+               />
                <h4 className="fw-bold mb-1 text-slate-900">{profileData.firstName} {profileData.lastName}</h4>
                <p className="text-muted mb-3" style={{ fontSize: '0.9rem' }}>{profileData.department}</p>
                <div className="d-flex justify-content-center gap-2 flex-wrap">
@@ -372,10 +391,14 @@ export default function StudentProfile() {
             <div className="card border-0 p-4 text-center bg-white shadow-sm mb-4">
               <div className="position-relative d-inline-block mx-auto mb-3">
                 <img
-                  src={resolveResumeUrl(profilePic) || 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80'}
+                  src={resolveProfileImageUrl(profilePic)}
                   alt="Profile"
-                  className="rounded-circle border"
+                  className="rounded-circle border shadow-xs"
                   style={{ width: '110px', height: '110px', objectFit: 'cover' }}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=250&q=80';
+                  }}
                 />
                 <button
                   type="button"

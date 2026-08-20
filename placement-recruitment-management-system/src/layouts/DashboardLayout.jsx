@@ -137,75 +137,107 @@ export default function DashboardLayout() {
       ? tpoLinks 
       : recruiterLinks;
 
-  const userInitials = (userEmail || 'User').slice(0, 2).toUpperCase();
+  const getUserDisplayName = () => {
+    const r = (role || '').toUpperCase();
+    if (r === 'STUDENT') return 'Aarav Mehta';
+    if (r === 'VC') return 'Dr. K.S. Verma';
+    if (r === 'TPO') return 'Prof. Rajesh Sharma';
+    if (r === 'RECRUITER') return 'Priya Nair';
+    return userEmail ? userEmail.split('@')[0] : 'User Account';
+  };
+
+  const userDisplayName = getUserDisplayName();
+  const userInitials = userDisplayName.split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'U';
 
   const getWorkspaceTitle = () => {
     if (role?.toUpperCase() === 'VC') return 'VC Workspace';
     if (role?.toUpperCase() === 'TPO') return 'TPO Workspace';
     if (role?.toUpperCase() === 'STUDENT') return 'Student Workspace';
-    return 'Recruiter Workspace';
+    if (role?.toUpperCase() === 'RECRUITER') return 'Recruiter Workspace';
+    return 'Campus Portal';
+  };
+
+  const getRoleBadge = () => {
+    switch (role?.toUpperCase()) {
+      case 'VC':
+        return <span className="badge bg-purple-subtle text-purple border-0 fw-semibold px-2.5 py-1" style={{ fontSize: '0.68rem', backgroundColor: '#F3E8FF', color: '#7E22CE', letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>VICE CHANCELLOR</span>;
+      case 'TPO':
+        return <span className="badge bg-primary-subtle text-primary border-0 fw-semibold px-2.5 py-1" style={{ fontSize: '0.68rem', backgroundColor: '#EFF6FF', color: '#1D4ED8', letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>TPO OFFICER</span>;
+      case 'RECRUITER':
+        return <span className="badge bg-success-subtle text-success border-0 fw-semibold px-2.5 py-1" style={{ fontSize: '0.68rem', backgroundColor: '#ECFDF5', color: '#047857', letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>CORPORATE HR</span>;
+      default:
+        return <span className="badge bg-info-subtle text-info border-0 fw-semibold px-2.5 py-1" style={{ fontSize: '0.68rem', backgroundColor: '#F0F9FF', color: '#0284C7', letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>STUDENT SCHOLAR</span>;
+    }
   };
 
   return (
-    <div className="min-vh-100" style={{ backgroundColor: '#F8FAFC' }}>
-      {/* Fixed Dark Sidebar */}
-      <aside
-        className={`sidebar text-white d-flex flex-column position-fixed h-100 ${
-          sidebarOpen ? 'd-flex' : 'd-none d-md-flex'
-        }`}
-        style={{
-          width: '260px',
-          left: 0,
-          top: 0,
+    <div className="d-flex min-vh-100 bg-light" style={{ overflowX: 'hidden' }}>
+      {/* Sidebar Overlay for Mobile */}
+      {sidebarOpen && (
+        <div 
+          className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-lg-none" 
+          style={{ zIndex: 1040 }}
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Modern High-End Sidebar */}
+      <aside 
+        className={`d-flex flex-column p-3 text-white transition-all position-fixed h-100 ${
+          sidebarOpen ? 'start-0' : 'start-n100'
+        } start-lg-0`}
+        style={{ 
+          width: '260px', 
+          zIndex: 1050,
           backgroundColor: '#0F172A',
-          borderRight: '1px solid rgba(255, 255, 255, 0.08)',
-          zIndex: 1040,
+          boxShadow: '4px 0 24px 0 rgba(0, 0, 0, 0.08)',
+          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
         }}
       >
-        {/* Brand Header - Vertically Centered matching 64px Top Header Bar */}
-        <div className="d-flex justify-content-between align-items-center px-4 py-3 border-bottom" style={{ height: '64px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', flexShrink: 0 }}>
-          <Link to="/" className="d-flex align-items-center gap-3 text-decoration-none text-white">
-            <div className="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center fw-bold shadow-sm" style={{ width: '36px', height: '36px', fontSize: '1.15rem', flexShrink: 0 }}>
+        {/* Brand Header */}
+        <div className="d-flex align-items-center justify-content-between mb-4 px-2 pt-2">
+          <Link to="/" className="d-flex align-items-center gap-2.5 text-decoration-none text-white overflow-hidden">
+            <div className="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center fw-bold shadow-xs flex-shrink-0" style={{ width: '38px', height: '38px', fontSize: '1.2rem' }}>
               P
             </div>
-            <span className="fw-bold tracking-tight text-white m-0" style={{ fontSize: '1.2rem', whiteSpace: 'nowrap' }}>PRMS Pro</span>
+            <div className="d-flex flex-column overflow-hidden" style={{ minWidth: 0 }}>
+              <span className="fw-bold tracking-tight text-white lh-1" style={{ fontSize: '1.15rem' }}>PRMS Pro</span>
+              <span className="text-truncate text-secondary" style={{ fontSize: '0.68rem', color: '#94A3B8', marginTop: '3px' }}>
+                {getWorkspaceTitle()}
+              </span>
+            </div>
           </Link>
-          <button className="btn text-white p-0 d-md-none border-0" onClick={() => setSidebarOpen(false)}>
-            <X size={22} />
+          <button 
+            className="btn btn-link text-secondary d-lg-none p-1 text-decoration-none" 
+            onClick={() => setSidebarOpen(false)}
+          >
+            <X size={20} />
           </button>
         </div>
 
-        {/* Inner Sidebar Body with Spaced Padding */}
-        <div className="d-flex flex-column flex-grow-1 p-3">
-          {/* User Workspace Indicator Badge */}
-          <div className="rounded-3 px-3 py-2 mb-3 d-flex align-items-center" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.08)', gap: '8px' }}>
-            <span className="bg-success rounded-circle" style={{ width: '7px', height: '7px', flexShrink: 0 }}></span>
-            <span className="fw-semibold text-uppercase text-truncate" style={{ fontSize: '0.68rem', letterSpacing: '0.04em', color: '#CBD5E1' }}>
-              {getWorkspaceTitle()}
-            </span>
-          </div>
-
-          {/* Navigation Links */}
-          <nav className="nav flex-column flex-grow-1 gap-1.5">
-            {activeLinks.map((link) => {
-              const active = isActive(link.path);
+        <div className="d-flex flex-column justify-content-between flex-grow-1 overflow-y-auto">
+          {/* Navigation Items */}
+          <nav className="nav flex-column gap-1.5">
+            {activeLinks.map((item) => {
+              const active = isActive(item.path);
               return (
                 <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setSidebarOpen(false)}
-                  className={`nav-link text-decoration-none rounded-3 px-3 py-2.5 d-flex align-items-center gap-3 ${
-                    active ? 'bg-primary text-white fw-semibold shadow-sm' : ''
+                  key={item.path}
+                  to={item.path}
+                  className={`nav-link d-flex align-items-center gap-3 px-3 py-2.5 rounded-3 fw-medium transition-all ${
+                    active 
+                      ? 'bg-primary text-white shadow-xs' 
+                      : 'text-secondary hover-text-white'
                   }`}
                   style={{
                     fontSize: '0.9rem',
-                    color: active ? '#FFFFFF' : '#CBD5E1',
                     backgroundColor: active ? '#2563EB' : 'transparent',
-                    transition: 'all 0.2s ease',
+                    color: active ? '#FFFFFF' : '#94A3B8'
                   }}
+                  onClick={() => setSidebarOpen(false)}
                 >
-                  <span style={{ color: active ? '#FFFFFF' : '#94A3B8' }}>{link.icon}</span>
-                  <span>{link.label}</span>
+                  {item.icon}
+                  <span>{item.label}</span>
                 </Link>
               );
             })}
@@ -219,7 +251,7 @@ export default function DashboardLayout() {
               </div>
               <div className="flex-grow-1 overflow-hidden">
                 <p className="m-0 fw-semibold text-white text-truncate" style={{ fontSize: '0.85rem' }}>
-                  {userEmail ? userEmail.split('@')[0] : 'User Account'}
+                  {userDisplayName}
                 </p>
                 <p className="m-0 text-truncate" style={{ fontSize: '0.75rem', color: '#94A3B8' }}>
                   {userEmail || 'user@prms.edu'}

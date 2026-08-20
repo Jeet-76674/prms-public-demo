@@ -95,7 +95,7 @@ export default function StudentDashboard() {
         <div className="card-body py-3 px-4 d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 position-relative overflow-hidden">
           <div className="position-relative z-1">
             <h3 className="fw-bold mb-1 text-slate-900" style={{ letterSpacing: '-0.025em', fontSize: '1.35rem' }}>
-              Hello, {profile?.email?.split('@')[0] || userEmail?.split('@')[0] || 'Candidate'}!
+              Hello, {profile?.firstName ? `${profile.firstName} ${profile.lastName || ''}`.trim() : (userEmail?.startsWith('student') ? 'Aarav Mehta' : (userEmail ? userEmail.split('@')[0] : 'Aarav Mehta'))}!
             </h3>
             <p className="text-secondary mb-0" style={{ fontSize: '0.875rem', maxWidth: '520px', lineHeight: '1.45' }}>
               Track your interview pipelines, search open recruiter roles, and maintain your academic transcript.
