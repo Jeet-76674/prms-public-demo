@@ -19,6 +19,7 @@ import {
   Building2
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { resolvePdfUrl } from '../../utils/pdfHelper';
 
 export default function StudentJobDetails() {
   const { id } = useParams();
