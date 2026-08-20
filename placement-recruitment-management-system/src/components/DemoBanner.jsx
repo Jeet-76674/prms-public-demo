@@ -39,8 +39,8 @@ export default function DemoBanner() {
         className="w-100 text-white d-flex align-items-center justify-content-between flex-wrap gap-2"
         style={{ 
           background: 'linear-gradient(90deg, #1E1B4B 0%, #312E81 50%, #1E1B4B 100%)',
-          padding: '8px 16px',
-          fontSize: '0.825rem',
+          padding: '4px 16px',
+          fontSize: '0.75rem',
           borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
           zIndex: 1050,
           position: 'relative'
@@ -62,7 +62,7 @@ export default function DemoBanner() {
             <Sparkles size={12} style={{ flexShrink: 0 }} />
             <span>DEMO SANDBOX</span>
           </span>
-          <span style={{ color: 'rgba(255, 255, 255, 0.92)', fontSize: '0.8125rem', lineHeight: 1.3 }}>
+          <span style={{ color: 'rgba(255, 255, 255, 0.92)', fontSize: '0.75rem', lineHeight: 1.3 }}>
             Fictional university data. Uploads are strictly validated and simulated.
           </span>
           {role && (
@@ -72,9 +72,9 @@ export default function DemoBanner() {
                 backgroundColor: 'rgba(99, 102, 241, 0.25)',
                 color: '#C7D2FE',
                 border: '1px solid rgba(165, 180, 252, 0.4)',
-                padding: '2px 8px',
+                padding: '1px 6px',
                 borderRadius: '9999px',
-                fontSize: '0.7rem',
+                fontSize: '0.65rem',
                 letterSpacing: '0.03em',
                 textTransform: 'uppercase',
                 lineHeight: 1.2

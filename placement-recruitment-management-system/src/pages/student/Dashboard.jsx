@@ -65,14 +65,14 @@ export default function StudentDashboard() {
   }
 
   // Calculate metrics
-  const appliedCount = applications.length;
+  const totalAppliedCount = applications.length;
   const shortlistedCount = applications.filter(a => a.status === 'SHORTLISTED' || a.status === 'INTERVIEW_SCHEDULED').length;
   const rejectedCount = applications.filter(a => a.status === 'REJECTED').length;
   const selectedCount = applications.filter(a => a.status === 'SELECTED').length;
 
   // Chart data
   const chartData = [
-    { name: 'Applied', count: appliedCount, fill: '#3B82F6' },
+    { name: 'Applied', count: applications.filter(a => a.status === 'APPLIED').length, fill: '#3B82F6' },
     { name: 'Reviewing', count: applications.filter(a => a.status === 'UNDER_REVIEW').length, fill: '#F59E0B' },
     { name: 'Shortlisted', count: shortlistedCount, fill: '#A855F7' },
     { name: 'Selected', count: selectedCount, fill: '#22C55E' }
@@ -118,7 +118,7 @@ export default function StudentDashboard() {
                 <Briefcase size={20} />
               </div>
             </div>
-            <h2 className="fw-bold mb-1">{appliedCount}</h2>
+            <h2 className="fw-bold mb-1">{totalAppliedCount}</h2>
             <p className="text-muted text-xs mb-0">Total jobs applied</p>
           </div>
         </div>
