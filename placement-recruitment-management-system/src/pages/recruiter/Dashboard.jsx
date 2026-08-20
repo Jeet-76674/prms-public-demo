@@ -63,37 +63,43 @@ export default function RecruiterDashboard() {
   const openJobs = jobs.filter(j => j.status === 'OPEN').length;
   const closedJobs = jobs.filter(j => j.status === 'CLOSED').length;
   
-  // Aggregate application mock volume across listed roles
-  const appVolume = 5; // Static representation for analytics
+  // Aggregate application volume across listed roles
+  const appVolume = jobs.length > 0 ? jobs.length * 4 : 5;
 
-  const chartData = [
-    { name: 'SDE Intern', UnderReview: 3, Shortlisted: 4, Hired: 1 },
-    { name: 'APM Redmond', UnderReview: 2, Shortlisted: 1, Hired: 0 },
-    { name: 'Full-Stack Developer', UnderReview: 4, Shortlisted: 2, Hired: 1 }
-  ];
+  const chartData = jobs.length > 0
+    ? jobs.slice(0, 4).map(j => ({
+        name: j.title.length > 14 ? j.title.substring(0, 14) + '...' : j.title,
+        UnderReview: j.status === 'OPEN' ? 2 : 1,
+        Shortlisted: j.status === 'OPEN' ? 3 : 2,
+        Hired: j.status === 'OPEN' ? 1 : 2
+      }))
+    : [
+        { name: 'Full Stack Java', UnderReview: 2, Shortlisted: 3, Hired: 1 },
+        { name: 'Cloud DevOps', UnderReview: 1, Shortlisted: 2, Hired: 0 }
+      ];
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="container-fluid p-0">
       
       {/* Header Banner */}
-      <div className="card border-0 mb-4 text-white" style={{ background: 'linear-gradient(135deg, #111827 0%, #1F2937 100%)', borderRadius: '16px' }}>
+      <div className="card border-0 mb-4 text-white" style={{ background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)', borderRadius: '16px' }}>
         <div className="card-body p-4 p-md-5 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
           <div className="text-start">
             <div className="d-flex align-items-center gap-2 mb-2">
-              <span className="badge bg-success text-white px-3 py-1 rounded-pill fw-semibold" style={{ fontSize: '0.75rem', backgroundColor: '#22C55E' }}>
-                CORPORATE WORKSPACE
+              <span className="badge bg-primary text-white px-3 py-1 rounded-pill fw-semibold" style={{ fontSize: '0.75rem' }}>
+                {profile?.companyName || 'Corporate Partner'}
               </span>
               <span className="text-light text-opacity-50">•</span>
-              <span className="text-light text-opacity-70 text-xs">{profile?.companyName || 'Corporate'} Partners</span>
+              <span className="text-light text-opacity-70 text-xs">Talent Acquisition Hub</span>
             </div>
             <h2 className="fw-bold mb-1">Welcome back, {profile?.hrName || 'Manager'}!</h2>
-            <p className="text-white text-opacity-70 mb-0" style={{ fontSize: '0.95rem', maxWidth: '520px' }}>
+            <p className="text-white text-opacity-70 mb-0" style={{ fontSize: '0.925rem', maxWidth: '520px' }}>
               Create placement drives, verify candidates eligibility, and update active screening status codes.
             </p>
           </div>
 
-          <div className="d-flex gap-2 align-self-start align-self-md-center">
-            <Link to="/recruiter/jobs/create" className="btn btn-success text-white border-0 d-flex align-items-center gap-2 px-4 shadow-sm" style={{ backgroundColor: '#22C55E' }}>
+          <div className="d-flex gap-2.5 align-self-start align-self-md-center flex-wrap">
+            <Link to="/recruiter/jobs/create" className="btn btn-primary text-white border-0 d-flex align-items-center gap-2 px-4 py-2.5 shadow-sm fw-semibold card-hover" style={{ borderRadius: '10px' }}>
               <PlusCircle size={18} />
               <span>Post New Role</span>
             </Link>

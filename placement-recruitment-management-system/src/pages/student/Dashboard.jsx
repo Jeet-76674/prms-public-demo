@@ -274,16 +274,16 @@ export default function StudentDashboard() {
           {jobs.map((job) => (
             <div key={job.id} className="col-12 col-md-4">
               <div className="card h-100 p-3 card-hover border bg-white position-relative d-flex flex-column" style={{ borderRadius: '14px', borderColor: '#E2E8F0' }}>
-                <div className="d-flex align-items-start justify-content-between mb-2">
-                  <div className="d-flex align-items-center gap-2.5">
-                    <div className="rounded-3 border d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: '42px', height: '42px', backgroundColor: '#F8FAFC', color: '#1E293B' }}>
-                      <Building2 size={22} className="text-slate-700" />
+                <div className="d-flex align-items-start justify-content-between gap-2 mb-2">
+                  <div className="d-flex align-items-center gap-2.5 flex-grow-1" style={{ minWidth: 0 }}>
+                    <div className="rounded-3 border d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: '40px', height: '40px', backgroundColor: '#F8FAFC', color: '#1E293B' }}>
+                      <Building2 size={20} className="text-slate-700" />
                     </div>
-                    <h6 className="fw-bold mb-0 text-slate-900 text-truncate" style={{ fontSize: '1rem', maxWidth: '170px' }} title={job.title}>
+                    <h6 className="fw-bold mb-0 text-slate-900 text-truncate flex-grow-1" style={{ fontSize: '0.95rem' }} title={job.title}>
                       {job.title}
                     </h6>
                   </div>
-                  <span className="badge bg-light text-primary border-0 fw-semibold px-2 py-1" style={{ fontSize: '0.65rem', letterSpacing: '0.04em' }}>
+                  <span className="badge bg-primary-subtle text-primary border-0 fw-semibold px-2 py-1 flex-shrink-0" style={{ fontSize: '0.65rem', letterSpacing: '0.04em' }}>
                     NEW
                   </span>
                 </div>

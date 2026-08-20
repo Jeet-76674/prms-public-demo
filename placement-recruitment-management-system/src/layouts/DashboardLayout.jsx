@@ -140,10 +140,10 @@ export default function DashboardLayout() {
   const userInitials = (userEmail || 'User').slice(0, 2).toUpperCase();
 
   const getWorkspaceTitle = () => {
-    if (role?.toUpperCase() === 'VC') return 'Vice Chancellor';
-    if (role?.toUpperCase() === 'TPO') return 'TPO Portal';
-    if (role?.toUpperCase() === 'STUDENT') return 'Student';
-    return 'Recruiter';
+    if (role?.toUpperCase() === 'VC') return 'VC Workspace';
+    if (role?.toUpperCase() === 'TPO') return 'TPO Workspace';
+    if (role?.toUpperCase() === 'STUDENT') return 'Student Workspace';
+    return 'Recruiter Workspace';
   };
 
   return (
@@ -178,10 +178,10 @@ export default function DashboardLayout() {
         {/* Inner Sidebar Body with Spaced Padding */}
         <div className="d-flex flex-column flex-grow-1 p-3">
           {/* User Workspace Indicator Badge */}
-          <div className="rounded-3 px-3 py-2 mb-3 d-flex align-items-center" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.08)', gap: '10px' }}>
+          <div className="rounded-3 px-3 py-2 mb-3 d-flex align-items-center" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.08)', gap: '8px' }}>
             <span className="bg-success rounded-circle" style={{ width: '7px', height: '7px', flexShrink: 0 }}></span>
-            <span className="fw-semibold text-uppercase" style={{ fontSize: '0.7rem', letterSpacing: '0.05em', color: '#CBD5E1', whiteSpace: 'nowrap' }}>
-              {getWorkspaceTitle()} Workspace
+            <span className="fw-semibold text-uppercase text-truncate" style={{ fontSize: '0.68rem', letterSpacing: '0.04em', color: '#CBD5E1' }}>
+              {getWorkspaceTitle()}
             </span>
           </div>
 

@@ -180,41 +180,82 @@ export default function VcDashboard() {
       </div>
 
       {/* VC Administrative Quick Actions */}
-      <div className="card border-0 bg-white shadow-sm p-4" style={{ borderRadius: '12px' }}>
-        <h5 className="fw-bold text-slate-800 mb-3">VC Governance Hub</h5>
+      <div className="card border-0 bg-white shadow-sm p-4" style={{ borderRadius: '16px' }}>
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <h5 className="fw-bold text-slate-900 mb-1" style={{ letterSpacing: '-0.01em' }}>VC Governance Hub</h5>
+            <p className="text-muted text-xs mb-0">High-level institutional authorization, TPO accounts, and partner approvals.</p>
+          </div>
+          <span className="badge bg-primary-subtle text-primary border-0 fw-semibold px-2.5 py-1" style={{ fontSize: '0.7rem' }}>
+            EXECUTIVE CONTROL
+          </span>
+        </div>
+
         <div className="row g-3">
           <div className="col-12 col-md-6">
-            <div className="p-3.5 rounded-3 bg-light border d-flex align-items-center justify-content-between">
-              <div className="d-flex align-items-center gap-3">
-                <div className="bg-primary text-white p-2.5 rounded-3">
-                  <Building2 size={20} />
+            <Link 
+              to="/vc/recruiters" 
+              className="text-decoration-none d-block h-100"
+            >
+              <div 
+                className="p-4 rounded-3 border bg-white card-hover transition-all d-flex flex-column justify-content-between h-100"
+                style={{ borderColor: '#E2E8F0', cursor: 'pointer' }}
+              >
+                <div className="d-flex align-items-start gap-3 mb-3">
+                  <div className="bg-primary text-white p-3 rounded-3 d-flex align-items-center justify-content-center shadow-xs flex-shrink-0" style={{ width: '48px', height: '48px' }}>
+                    <Building2 size={24} />
+                  </div>
+                  <div>
+                    <h6 className="fw-bold mb-1 text-slate-900 card-hover-text" style={{ fontSize: '1rem' }}>Review Company Registrations</h6>
+                    <p className="text-secondary text-xs mb-0" style={{ lineHeight: '1.5' }}>
+                      Approve, inspect compliance docs, or reject pending corporate employer accounts across campus drives.
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h6 className="fw-bold mb-0 text-dark">Review Company Registrations</h6>
-                  <p className="text-muted text-xs mb-0">Approve or reject pending corporate employer accounts.</p>
+                <div className="d-flex justify-content-between align-items-center pt-2 border-top border-light mt-auto">
+                  <span className="text-muted text-xs">
+                    Pending: <strong className="text-warning">{data.pendingApprovals || 0} Awaiting</strong>
+                  </span>
+                  <span className="btn btn-sm btn-primary px-3 fw-semibold d-inline-flex align-items-center gap-1">
+                    <span>Review Now</span>
+                    <ArrowRight size={14} />
+                  </span>
                 </div>
               </div>
-              <Link to="/vc/recruiters" className="btn btn-primary btn-sm px-3 fw-semibold">
-                Go
-              </Link>
-            </div>
+            </Link>
           </div>
 
           <div className="col-12 col-md-6">
-            <div className="p-3.5 rounded-3 bg-light border d-flex align-items-center justify-content-between">
-              <div className="d-flex align-items-center gap-3">
-                <div className="bg-dark text-white p-2.5 rounded-3" style={{ backgroundColor: '#0F172A' }}>
-                  <UserCheck size={20} />
+            <Link 
+              to="/vc/tpo-management" 
+              className="text-decoration-none d-block h-100"
+            >
+              <div 
+                className="p-4 rounded-3 border bg-white card-hover transition-all d-flex flex-column justify-content-between h-100"
+                style={{ borderColor: '#E2E8F0', cursor: 'pointer' }}
+              >
+                <div className="d-flex align-items-start gap-3 mb-3">
+                  <div className="text-white p-3 rounded-3 d-flex align-items-center justify-content-center shadow-xs flex-shrink-0" style={{ width: '48px', height: '48px', backgroundColor: '#0F172A' }}>
+                    <UserCheck size={24} />
+                  </div>
+                  <div>
+                    <h6 className="fw-bold mb-1 text-slate-900 card-hover-text" style={{ fontSize: '1rem' }}>TPO Officer Management</h6>
+                    <p className="text-secondary text-xs mb-0" style={{ lineHeight: '1.5' }}>
+                      Create new university TPO administrators, inspect operational statuses, and supervise placement operations.
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h6 className="fw-bold mb-0 text-dark">TPO Officer Management</h6>
-                  <p className="text-muted text-xs mb-0">Create new TPOs, change status, or reset credentials.</p>
+                <div className="d-flex justify-content-between align-items-center pt-2 border-top border-light mt-auto">
+                  <span className="text-muted text-xs">
+                    Active: <strong className="text-slate-800">{data.totalTpos || 1} Officers</strong>
+                  </span>
+                  <span className="btn btn-sm btn-dark px-3 fw-semibold d-inline-flex align-items-center gap-1" style={{ backgroundColor: '#0F172A' }}>
+                    <span>Manage TPOs</span>
+                    <ArrowRight size={14} />
+                  </span>
                 </div>
               </div>
-              <Link to="/vc/tpo-management" className="btn btn-dark btn-sm px-3 fw-semibold" style={{ backgroundColor: '#0F172A' }}>
-                Manage
-              </Link>
-            </div>
+            </Link>
           </div>
         </div>
       </div>
