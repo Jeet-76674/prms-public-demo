@@ -36,36 +36,48 @@ export default function DemoBanner() {
   return (
     <>
       <div 
-        className="w-100 py-1.5 px-3 text-white d-flex align-items-center justify-content-between flex-wrap gap-2 shadow-xs"
+        className="w-100 text-white d-flex align-items-center justify-content-between flex-wrap gap-2"
         style={{ 
           background: 'linear-gradient(90deg, #1E1B4B 0%, #312E81 50%, #1E1B4B 100%)',
-          fontSize: '0.82rem',
-          borderBottom: '1px solid rgba(255,255,255,0.15)',
+          padding: '8px 16px',
+          fontSize: '0.825rem',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
           zIndex: 1050,
           position: 'relative'
         }}
       >
         <div className="d-flex align-items-center gap-2 flex-wrap">
           <span 
-            className="rounded-pill px-2.5 py-0.5 d-inline-flex align-items-center gap-1.5 fw-semibold" 
-            style={{ backgroundColor: '#6366F1', color: '#FFFFFF', fontSize: '0.72rem', letterSpacing: '0.03em' }}
+            className="d-inline-flex align-items-center gap-1 fw-bold text-white shadow-sm" 
+            style={{ 
+              backgroundColor: '#6366F1', 
+              padding: '3px 9px',
+              borderRadius: '9999px',
+              fontSize: '0.7rem', 
+              letterSpacing: '0.04em',
+              lineHeight: 1.2,
+              whiteSpace: 'nowrap'
+            }}
           >
-            <Sparkles size={12} />
+            <Sparkles size={12} style={{ flexShrink: 0 }} />
             <span>DEMO SANDBOX</span>
           </span>
-          <span className="opacity-90 text-white" style={{ fontSize: '0.8rem' }}>
+          <span style={{ color: 'rgba(255, 255, 255, 0.92)', fontSize: '0.8125rem', lineHeight: 1.3 }}>
             Fictional university data. Uploads are strictly validated and simulated.
           </span>
           {role && (
             <span 
-              className="ms-1 rounded-pill px-2.5 py-0.5 fw-semibold d-inline-flex align-items-center"
+              className="d-inline-flex align-items-center fw-semibold ms-1"
               style={{
                 backgroundColor: 'rgba(99, 102, 241, 0.25)',
                 color: '#C7D2FE',
                 border: '1px solid rgba(165, 180, 252, 0.4)',
-                fontSize: '0.72rem',
+                padding: '2px 8px',
+                borderRadius: '9999px',
+                fontSize: '0.7rem',
                 letterSpacing: '0.03em',
-                textTransform: 'uppercase'
+                textTransform: 'uppercase',
+                lineHeight: 1.2
               }}
             >
               Role: {role}
@@ -73,15 +85,18 @@ export default function DemoBanner() {
           )}
         </div>
 
-        <div className="d-flex align-items-center gap-2">
+        <div className="d-flex align-items-center gap-2 ms-auto">
           <button
             onClick={() => setShowConfirmModal(true)}
-            className="btn btn-sm py-0.5 px-2.5 rounded-pill d-inline-flex align-items-center gap-1.5 fw-medium"
+            className="btn btn-sm d-inline-flex align-items-center gap-1.5 fw-medium text-white shadow-none"
             style={{ 
               fontSize: '0.75rem', 
-              border: '1px solid rgba(255, 255, 255, 0.4)',
-              color: '#FFFFFF',
-              backgroundColor: 'rgba(255, 255, 255, 0.1)'
+              padding: '3px 10px',
+              borderRadius: '9999px',
+              border: '1px solid rgba(255, 255, 255, 0.35)',
+              backgroundColor: 'rgba(255, 255, 255, 0.12)',
+              lineHeight: 1.3,
+              transition: 'all 0.2s ease'
             }}
             title="Restore baseline students, companies, applications, and jobs"
           >
@@ -90,9 +105,9 @@ export default function DemoBanner() {
           </button>
           <button
             onClick={() => setIsDismissed(true)}
-            className="btn btn-sm text-white-50 p-0 ms-1 border-0"
+            className="btn btn-sm text-white-50 p-1 border-0 d-inline-flex align-items-center justify-content-center"
             title="Hide banner for this session"
-            style={{ background: 'transparent' }}
+            style={{ background: 'transparent', opacity: 0.7 }}
           >
             <X size={15} />
           </button>

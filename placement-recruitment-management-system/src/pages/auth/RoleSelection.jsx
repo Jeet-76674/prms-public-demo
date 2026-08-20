@@ -248,7 +248,7 @@ export default function RoleSelection() {
             </p>
 
             <button className="btn btn-premium btn-premium-primary w-100 mt-auto d-flex align-items-center justify-content-center gap-2">
-              <span>{isSignUp ? 'Student Register' : 'Student Sign In'}</span>
+              <span className="text-nowrap">{isSignUp ? 'Student Register' : 'Student Sign In'}</span>
               <ArrowRight size={16} />
             </button>
           </div>
@@ -274,7 +274,7 @@ export default function RoleSelection() {
             </p>
 
             <button className="btn btn-premium btn-premium-success w-100 mt-auto d-flex align-items-center justify-content-center gap-2">
-              <span>{isSignUp ? 'Recruiter Register' : 'Recruiter Sign In'}</span>
+              <span className="text-nowrap">{isSignUp ? 'Recruiter Register' : 'Recruiter Sign In'}</span>
               <ArrowRight size={16} />
             </button>
           </div>
@@ -301,7 +301,7 @@ export default function RoleSelection() {
               </p>
 
               <button className="btn btn-premium btn-premium-tpo w-100 mt-auto d-flex align-items-center justify-content-center gap-2">
-                <span>TPO Sign In</span>
+                <span className="text-nowrap">TPO Sign In</span>
                 <ArrowRight size={16} />
               </button>
             </div>
@@ -329,7 +329,7 @@ export default function RoleSelection() {
               </p>
 
               <button className="btn btn-dark w-100 mt-auto d-flex align-items-center justify-content-center gap-2 py-2.5 fw-semibold shadow-sm" style={{ backgroundColor: '#0F172A', borderRadius: '8px' }}>
-                <span>VC Sign In</span>
+                <span className="text-nowrap">VC Sign In</span>
                 <ArrowRight size={16} />
               </button>
             </div>
