@@ -68,14 +68,16 @@ export default function StudentDashboard() {
   const totalAppliedCount = applications.length;
   const shortlistedCount = applications.filter(a => a.applicationStatus === 'SHORTLISTED' || a.applicationStatus === 'INTERVIEW_SCHEDULED').length;
   const rejectedCount = applications.filter(a => a.applicationStatus === 'REJECTED').length;
-  const selectedCount = applications.filter(a => a.applicationStatus === 'SELECTED').length;
+  const selectedCount = applications.filter(a => a.applicationStatus === 'SELECTED' || a.applicationStatus === 'OFFER_ACCEPTED').length;
 
-  // Chart data
+  // Chart data - Detailed and accurate status representation
   const chartData = [
     { name: 'Applied', count: applications.filter(a => a.applicationStatus === 'APPLIED').length, fill: '#3B82F6' },
     { name: 'Reviewing', count: applications.filter(a => a.applicationStatus === 'UNDER_REVIEW').length, fill: '#F59E0B' },
-    { name: 'Shortlisted', count: shortlistedCount, fill: '#A855F7' },
-    { name: 'Selected', count: selectedCount, fill: '#22C55E' }
+    { name: 'Shortlisted', count: applications.filter(a => a.applicationStatus === 'SHORTLISTED').length, fill: '#9333EA' },
+    { name: 'Interview', count: applications.filter(a => a.applicationStatus === 'INTERVIEW_SCHEDULED').length, fill: '#F97316' },
+    { name: 'Selected', count: applications.filter(a => a.applicationStatus === 'SELECTED' || a.applicationStatus === 'OFFER_ACCEPTED').length, fill: '#22C55E' },
+    { name: 'Rejected', count: applications.filter(a => a.applicationStatus === 'REJECTED').length, fill: '#EF4444' }
   ];
 
   const pieData = [
@@ -87,28 +89,34 @@ export default function StudentDashboard() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="container-fluid p-0">
-      {/* Welcome Hero Panel */}
-      <div className="card border-0 mb-4 bg-white" style={{ borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(15, 23, 42, 0.03), 0 2px 4px -1px rgba(15, 23, 42, 0.02)' }}>
-        <div className="card-body p-4 p-md-5 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4 position-relative overflow-hidden">
-          {/* Subtle decorative background accent */}
-          <div className="position-absolute top-0 end-0 bottom-0 w-50" style={{ background: 'linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.04))', pointerEvents: 'none' }}></div>
-          
+      {/* Welcome Hero Panel - Compact & Sleek */}
+      <div className="card border-0 mb-3 bg-white" style={{ borderRadius: '12px', boxShadow: '0 2px 5px rgba(15, 23, 42, 0.04)' }}>
+        <div className="card-body py-3 px-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 position-relative overflow-hidden">
           <div className="position-relative z-1">
-            <span className="badge bg-primary bg-opacity-10 text-primary px-3 py-1.5 rounded-pill mb-3 fw-semibold" style={{ fontSize: '0.75rem', letterSpacing: '0.03em' }}>
-              ACADEMIC SESSION 2026
-            </span>
-            <h2 className="fw-bold mb-2 text-slate-900" style={{ letterSpacing: '-0.02em' }}>
+            <div className="d-flex align-items-center gap-2 mb-1">
+              <span className="badge bg-primary bg-opacity-10 text-primary px-2.5 py-0.5 rounded-pill fw-semibold" style={{ fontSize: '0.68rem', letterSpacing: '0.03em' }}>
+                ACADEMIC SESSION 2026
+              </span>
+            </div>
+            <h4 className="fw-bold mb-1 text-slate-900" style={{ letterSpacing: '-0.02em', fontSize: '1.25rem' }}>
               Hello, {profile?.email?.split('@')[0] || userEmail?.split('@')[0] || 'Candidate'}!
-            </h2>
-            <p className="text-secondary mb-0" style={{ fontSize: '0.95rem', maxWidth: '500px', lineHeight: '1.6' }}>
+            </h4>
+            <p className="text-secondary mb-0" style={{ fontSize: '0.85rem', maxWidth: '560px', lineHeight: '1.4' }}>
               Track your interview pipelines, search open recruiter roles, and maintain your academic transcript.
             </p>
           </div>
           
-          <div className="bg-light p-4 rounded-4 border position-relative z-1" style={{ minWidth: '280px', borderColor: '#E2E8F0' }}>
-            <div className="text-secondary fw-bold text-xs mb-1" style={{ letterSpacing: '0.05em' }}>CURRENT PERFORMANCE</div>
-            <div className="display-6 fw-bold mb-1 text-slate-900">{profile?.cgpa || '0.00'} <span className="text-muted fw-semibold" style={{ fontSize: '1.1rem' }}>CGPA</span></div>
-            <div className="text-xs text-secondary">{profile?.activeBacklogs || 0} active backlogs • {profile?.department || 'No dept'}</div>
+          <div className="bg-light px-3 py-2 rounded-3 border d-flex align-items-center gap-3 position-relative z-1 flex-shrink-0" style={{ borderColor: '#E2E8F0' }}>
+            <div>
+              <div className="text-muted fw-bold" style={{ fontSize: '0.65rem', letterSpacing: '0.04em' }}>CURRENT CGPA</div>
+              <div className="fw-bold text-slate-900" style={{ fontSize: '1.3rem', lineHeight: '1.1' }}>
+                {profile?.cgpa || '0.00'} <span className="text-muted fw-normal" style={{ fontSize: '0.75rem' }}>CGPA</span>
+              </div>
+            </div>
+            <div className="border-start ps-3 py-0.5 text-secondary" style={{ fontSize: '0.75rem', lineHeight: '1.3' }}>
+              <div><span className="fw-semibold text-slate-800">{profile?.activeBacklogs || 0}</span> backlogs</div>
+              <div className="text-truncate" style={{ maxWidth: '140px' }}>{profile?.department || 'Computer Science'}</div>
+            </div>
           </div>
         </div>
       </div>
