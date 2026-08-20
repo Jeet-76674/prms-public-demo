@@ -136,16 +136,16 @@ export default function StudentJobDetails() {
               <div>
                 <h3 className="fw-bold text-slate-900 mb-1" style={{ letterSpacing: '-0.02em' }}>{job.title}</h3>
                 <div className="d-flex flex-wrap align-items-center text-muted gap-3 mt-2" style={{ fontSize: '0.875rem' }}>
-                  <button
-                    type="button"
+                  <span
                     onClick={() => setShowCompanyModal(true)}
-                    className="btn btn-link p-0 text-decoration-none d-flex align-items-center gap-1.5 text-primary fw-semibold"
-                    style={{ fontSize: '0.9rem' }}
+                    className="d-flex align-items-center gap-1.5 text-primary fw-semibold cursor-pointer"
+                    style={{ cursor: 'pointer' }}
                     title="Click to view full Company Profile"
                   >
-                    <Building2 size={15} /> <span>{job.companyName || 'Corporate Partner'}</span>
+                    <Building2 size={15} /> 
+                    <span className="hover-underline">{job.companyName || 'Corporate Partner'}</span>
                     <ExternalLink size={12} className="opacity-75" />
-                  </button>
+                  </span>
                   <span className="d-flex align-items-center gap-1 text-slate-600">
                     <MapPin size={15} /> {job.location}
                   </span>

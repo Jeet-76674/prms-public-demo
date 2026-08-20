@@ -310,19 +310,18 @@ export default function StudentJobs() {
                       )}
                     </div>
 
-                    <div className="d-flex align-items-center gap-2 mb-2 flex-wrap">
-                      <button
-                        type="button"
+                    <div className="d-flex align-items-center gap-2 mb-2 flex-wrap" style={{ fontSize: '0.875rem' }}>
+                      <span
                         onClick={() => setSelectedCompany({ name: job.companyName, location: job.location })}
-                        className="btn btn-link p-0 text-decoration-none fw-bold text-primary d-inline-flex align-items-center gap-1"
-                        style={{ fontSize: '0.88rem' }}
+                        className="fw-semibold text-primary d-inline-flex align-items-center gap-1 cursor-pointer"
+                        style={{ cursor: 'pointer' }}
                         title="Click to view company details"
                       >
-                        <span>{job.companyName}</span>
+                        <span className="hover-underline">{job.companyName}</span>
                         <ExternalLink size={12} className="opacity-75" />
-                      </button>
-                      <span className="text-muted">•</span>
-                      <span className="text-secondary" style={{ fontSize: '0.85rem' }}>{job.department}</span>
+                      </span>
+                      <span className="text-muted" style={{ opacity: 0.6 }}>•</span>
+                      <span className="text-secondary">{job.department}</span>
                     </div>
 
                     <div className="d-flex flex-wrap gap-3 text-secondary" style={{ fontSize: '0.85rem' }}>
