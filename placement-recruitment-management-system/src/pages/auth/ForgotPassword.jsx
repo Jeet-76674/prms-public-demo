@@ -188,8 +188,8 @@ export default function ForgotPassword() {
         )}
 
         <div className="text-center mt-4 pt-3 border-top">
-          <Link to="/select-role" className="text-decoration-none text-muted text-sm fw-semibold d-inline-flex align-items-center gap-2">
-            <ArrowLeft size={16} />
+          <Link to="/select-role" className="btn-back px-3.5 py-1.5 rounded-pill text-sm">
+            <ArrowLeft size={16} className="text-primary" />
             <span>Back to Login</span>
           </Link>
         </div>

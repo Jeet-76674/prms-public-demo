@@ -95,8 +95,7 @@ export default function StudentJobDetails() {
     >
       <Link
         to="/student/jobs"
-        className="btn btn-white bg-white text-slate-800 border shadow-xs fw-semibold rounded-3 px-3.5 py-2 d-inline-flex align-items-center gap-2 mb-4 hover-shadow card-hover transition-all text-decoration-none"
-        style={{ fontSize: '0.875rem' }}
+        className="btn-back mb-4"
       >
         <ArrowLeft size={18} className="text-primary" />
         <span>Back to Job Directory</span>

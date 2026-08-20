@@ -83,7 +83,7 @@ export default function AuthLayout() {
             <div className="mb-3 text-start">
               <Link 
                 to={backToRolesUrl} 
-                className="btn btn-sm bg-white border border-slate-200 shadow-sm rounded-pill px-3 py-1.5 d-inline-flex align-items-center gap-2 text-slate-700 fw-semibold text-decoration-none"
+                className="btn-back rounded-pill px-3 py-1.5"
                 style={{ fontSize: '0.85rem' }}
               >
                 <ArrowLeft size={16} className="text-primary" />

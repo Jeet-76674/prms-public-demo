@@ -84,9 +84,10 @@ export default function TpoJobDetails() {
 
   return (
     <div className="container-fluid p-0">
-      <div className="mb-4 d-flex align-items-center gap-3">
-        <button onClick={() => navigate('/tpo/jobs')} className="btn btn-light rounded-circle p-2 shadow-sm">
-          <ArrowLeft size={20} />
+      <div className="mb-4">
+        <button onClick={() => navigate('/tpo/jobs')} className="btn-back mb-3">
+          <ArrowLeft size={18} className="text-primary" />
+          <span>Back to Job Postings</span>
         </button>
         <div>
           <h2 className="h4 mb-0 fw-bold text-slate-800">Job Details</h2>
