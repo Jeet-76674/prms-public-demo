@@ -101,7 +101,7 @@ All fictional demo accounts share the password: **`Demo@1234`**
 | **Vice Chancellor (VC)** | `vc.demo@indus.edu` | Dr. K.S. Verma |
 | **Training & Placement Officer (TPO)** | `tpo.demo@indus.edu` | Prof. Rajesh Sharma |
 | **Corporate Recruiter** | `recruiter.demo@techcorp.com` | Priya Nair (TechCorp Solutions) |
-| **Student Candidate** | `student.demo@indus.edu` | Alex Mercer (CSE, 9.2 CGPA) |
+| **Student Candidate** | `student.demo@indus.edu` | Aarav Mehta (CSE, 9.2 CGPA) |
 
 ---
 
@@ -131,6 +131,16 @@ All fictional demo accounts share the password: **`Demo@1234`**
 │
 └── docs/                                  # Architecture, workflows & API documentation
 ```
+
+---
+
+## 👨‍💻 Developer & Author
+
+**Developed with ❤️ and lots of ☕ by [Jeet Tetar](https://portfolio-mocha-nine-99.vercel.app/)**  
+*Java Full Stack Developer & UI Designer*
+
+- 🌐 **Portfolio**: [portfolio-mocha-nine-99.vercel.app](https://portfolio-mocha-nine-99.vercel.app/)
+- 💻 **GitHub**: [@Jeet-76674](https://github.com/Jeet-76674)
 
 ---
 
