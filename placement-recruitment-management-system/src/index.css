@@ -262,6 +262,33 @@ body {
   border-left: none !important;
 }
 
+/* Top Navbar Premium Hover Effect */
+.navbar-nav .nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #3B82F6 !important;
+}
+
+.navbar-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 4px;
+  left: 50%;
+  background-color: #3B82F6;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.navbar-nav .nav-link:hover::after {
+  width: 70%; /* Not full width for a sleeker look */
+}
+
 /* Modern Header */
 .dashboard-header {
   background-color: #FFFFFF;
