@@ -273,24 +273,26 @@ export default function StudentDashboard() {
         <div className="row g-3">
           {jobs.map((job) => (
             <div key={job.id} className="col-12 col-md-4">
-              <div className="card h-100 p-3 card-hover border bg-white position-relative d-flex flex-column" style={{ borderRadius: '14px', borderColor: '#E2E8F0' }}>
-                <div className="d-flex align-items-start justify-content-between gap-2 mb-2">
-                  <div className="d-flex align-items-center gap-2.5 flex-grow-1" style={{ minWidth: 0 }}>
-                    <div className="rounded-3 border d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: '40px', height: '40px', backgroundColor: '#F8FAFC', color: '#1E293B' }}>
-                      <Building2 size={20} className="text-slate-700" />
-                    </div>
-                    <h6 className="fw-bold mb-0 text-slate-900 text-truncate flex-grow-1" style={{ fontSize: '0.95rem' }} title={job.title}>
-                      {job.title}
-                    </h6>
+              <div className="card h-100 p-3.5 card-hover border bg-white position-relative d-flex flex-column" style={{ borderRadius: '14px', borderColor: '#E2E8F0' }}>
+                {/* Header Top Row: Logo & Badge */}
+                <div className="d-flex align-items-center justify-content-between mb-2.5">
+                  <div className="rounded-3 border d-flex align-items-center justify-content-center" style={{ width: '42px', height: '42px', backgroundColor: '#F8FAFC' }}>
+                    <Building2 size={22} className="text-slate-700" />
                   </div>
-                  <span className="badge bg-primary-subtle text-primary border-0 fw-semibold px-2 py-1 flex-shrink-0" style={{ fontSize: '0.65rem', letterSpacing: '0.04em' }}>
+                  <span className="badge bg-primary-subtle text-primary border-0 fw-semibold px-2.5 py-1" style={{ fontSize: '0.68rem', letterSpacing: '0.04em' }}>
                     NEW
                   </span>
                 </div>
 
-                <div className="d-flex align-items-center gap-2 text-secondary mb-3 mt-1" style={{ fontSize: '0.8rem' }}>
+                {/* Job Title: Full display without clipping or overlap */}
+                <h6 className="fw-bold text-slate-900 mb-2" style={{ fontSize: '1rem', lineHeight: '1.4', letterSpacing: '-0.01em' }}>
+                  {job.title}
+                </h6>
+
+                {/* Metadata Row */}
+                <div className="d-flex align-items-center gap-2 text-secondary mb-3 mt-auto pt-1" style={{ fontSize: '0.8rem' }}>
                   <span className="d-inline-flex align-items-center gap-1 text-truncate">
-                    <MapPin size={13} className="text-muted flex-shrink-0" /> {job.location || 'Pune'} | {job.workMode || 'On-Site'}
+                    <MapPin size={13} className="text-muted flex-shrink-0" /> {job.location?.includes(job.workMode) ? job.location : `${job.location || 'Pune'} • ${job.workMode || 'On-Site'}`}
                   </span>
                   <span className="text-muted opacity-50">•</span>
                   <span className="d-inline-flex align-items-center gap-1 flex-shrink-0">
@@ -298,7 +300,8 @@ export default function StudentDashboard() {
                   </span>
                 </div>
 
-                <Link to={`/student/jobs/${job.id}`} className="btn btn-primary w-100 py-2 fw-semibold mt-auto d-flex align-items-center justify-content-center" style={{ borderRadius: '8px', fontSize: '0.9rem' }}>
+                {/* Action Button */}
+                <Link to={`/student/jobs/${job.id}`} className="btn btn-primary w-100 py-2 fw-semibold d-flex align-items-center justify-content-center" style={{ borderRadius: '8px', fontSize: '0.9rem' }}>
                   View details
                 </Link>
               </div>
