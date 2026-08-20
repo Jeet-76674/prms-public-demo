@@ -66,21 +66,21 @@ export default function StudentDashboard() {
 
   // Calculate metrics
   const totalAppliedCount = applications.length;
-  const shortlistedCount = applications.filter(a => a.status === 'SHORTLISTED' || a.status === 'INTERVIEW_SCHEDULED').length;
-  const rejectedCount = applications.filter(a => a.status === 'REJECTED').length;
-  const selectedCount = applications.filter(a => a.status === 'SELECTED').length;
+  const shortlistedCount = applications.filter(a => a.applicationStatus === 'SHORTLISTED' || a.applicationStatus === 'INTERVIEW_SCHEDULED').length;
+  const rejectedCount = applications.filter(a => a.applicationStatus === 'REJECTED').length;
+  const selectedCount = applications.filter(a => a.applicationStatus === 'SELECTED').length;
 
   // Chart data
   const chartData = [
-    { name: 'Applied', count: applications.filter(a => a.status === 'APPLIED').length, fill: '#3B82F6' },
-    { name: 'Reviewing', count: applications.filter(a => a.status === 'UNDER_REVIEW').length, fill: '#F59E0B' },
+    { name: 'Applied', count: applications.filter(a => a.applicationStatus === 'APPLIED').length, fill: '#3B82F6' },
+    { name: 'Reviewing', count: applications.filter(a => a.applicationStatus === 'UNDER_REVIEW').length, fill: '#F59E0B' },
     { name: 'Shortlisted', count: shortlistedCount, fill: '#A855F7' },
     { name: 'Selected', count: selectedCount, fill: '#22C55E' }
   ];
 
   const pieData = [
-    { name: 'Active', value: applications.filter(a => a.status !== 'REJECTED' && a.status !== 'WITHDRAWN').length },
-    { name: 'Closed/In-active', value: applications.filter(a => a.status === 'REJECTED' || a.status === 'WITHDRAWN').length }
+    { name: 'Active', value: applications.filter(a => a.applicationStatus !== 'REJECTED' && a.applicationStatus !== 'WITHDRAWN').length },
+    { name: 'Closed/In-active', value: applications.filter(a => a.applicationStatus === 'REJECTED' || a.applicationStatus === 'WITHDRAWN').length }
   ];
 
   const COLORS = ['#2563EB', '#64748B'];
@@ -88,21 +88,27 @@ export default function StudentDashboard() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="container-fluid p-0">
       {/* Welcome Hero Panel */}
-      <div className="card border-0 mb-4 text-white" style={{ background: 'linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%)', borderRadius: '16px' }}>
-        <div className="card-body p-4 p-md-5 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-          <div>
-            <span className="badge bg-white bg-opacity-20 text-white px-3 py-1.5 rounded-pill mb-2 fw-semibold" style={{ fontSize: '0.8rem' }}>
-              Academic Session 2026
+      <div className="card border-0 mb-4 bg-white" style={{ borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(15, 23, 42, 0.03), 0 2px 4px -1px rgba(15, 23, 42, 0.02)' }}>
+        <div className="card-body p-4 p-md-5 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4 position-relative overflow-hidden">
+          {/* Subtle decorative background accent */}
+          <div className="position-absolute top-0 end-0 bottom-0 w-50" style={{ background: 'linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.04))', pointerEvents: 'none' }}></div>
+          
+          <div className="position-relative z-1">
+            <span className="badge bg-primary bg-opacity-10 text-primary px-3 py-1.5 rounded-pill mb-3 fw-semibold" style={{ fontSize: '0.75rem', letterSpacing: '0.03em' }}>
+              ACADEMIC SESSION 2026
             </span>
-            <h2 className="fw-bold mb-1">Hello, {profile?.email?.split('@')[0] || user?.email?.split('@')[0] || 'Candidate'}!</h2>
-            <p className="text-white text-opacity-80 mb-0" style={{ fontSize: '1rem', maxWidth: '500px' }}>
+            <h2 className="fw-bold mb-2 text-slate-900" style={{ letterSpacing: '-0.02em' }}>
+              Hello, {profile?.email?.split('@')[0] || userEmail?.split('@')[0] || 'Candidate'}!
+            </h2>
+            <p className="text-secondary mb-0" style={{ fontSize: '0.95rem', maxWidth: '500px', lineHeight: '1.6' }}>
               Track your interview pipelines, search open recruiter roles, and maintain your academic transcript.
             </p>
           </div>
-          <div className="bg-white bg-opacity-10 p-3 rounded-4 border border-light border-opacity-10">
-            <div className="text-white text-opacity-70 text-xs mb-1">CURRENT PERFORMANCE</div>
-            <div className="display-6 fw-bold mb-1">{profile?.cgpa || '0.00'} <span style={{ fontSize: '1.2rem' }}>CGPA</span></div>
-            <div className="text-xs text-white text-opacity-90">{profile?.activeBacklogs || 0} active backlogs • {profile?.department || 'No dept'}</div>
+          
+          <div className="bg-light p-4 rounded-4 border position-relative z-1" style={{ minWidth: '280px', borderColor: '#E2E8F0' }}>
+            <div className="text-secondary fw-bold text-xs mb-1" style={{ letterSpacing: '0.05em' }}>CURRENT PERFORMANCE</div>
+            <div className="display-6 fw-bold mb-1 text-slate-900">{profile?.cgpa || '0.00'} <span className="text-muted fw-semibold" style={{ fontSize: '1.1rem' }}>CGPA</span></div>
+            <div className="text-xs text-secondary">{profile?.activeBacklogs || 0} active backlogs • {profile?.department || 'No dept'}</div>
           </div>
         </div>
       </div>
