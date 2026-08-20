@@ -182,6 +182,7 @@ public class TpoStudentServiceImpl implements TpoStudentService {
         response.setStudentEmail(application.getStudent().getUser().getEmail());
         response.setResumeUrl(application.getStudent().getResumeUrl());
         response.setApplicationStatus(application.getApplicationStatus());
+        response.setJoiningDate(application.getJoiningDate());
         response.setCoverLetter(application.getCoverLetter());
         response.setAppliedAt(application.getAppliedAt());
         return response;

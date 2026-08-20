@@ -12,7 +12,6 @@ public class CreatePlacementRequest {
     @NotNull(message = "Student ID is required")
     private Long studentId;
 
-    @NotNull(message = "Recruiter ID is required")
     private Long recruiterId;
 
     @NotNull(message = "Job ID is required")

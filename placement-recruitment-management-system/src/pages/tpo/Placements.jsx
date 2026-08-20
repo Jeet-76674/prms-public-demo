@@ -144,7 +144,8 @@ export default function TpoPlacements() {
       packageAmount: packageAmt,
       workLocation: loc,
       employmentType: empType,
-      offerDate: today
+      offerDate: today,
+      joiningDate: app.joiningDate || ''
     }));
     setShowPendingModal(false);
     setShowCreateModal(true);
@@ -185,7 +186,9 @@ export default function TpoPlacements() {
         ...newPlacement,
         studentId: parseInt(newPlacement.studentId, 10),
         jobId: parseInt(newPlacement.jobId, 10),
-        packageAmount: parseFloat(newPlacement.packageAmount)
+        packageAmount: parseFloat(newPlacement.packageAmount),
+        joiningDate: newPlacement.joiningDate || null,
+        offerDate: newPlacement.offerDate || null
       };
       await tpoService.createPlacement(payload);
       toast.success('Placement created successfully');

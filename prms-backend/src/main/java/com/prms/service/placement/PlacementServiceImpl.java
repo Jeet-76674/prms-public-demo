@@ -57,11 +57,19 @@ public class PlacementServiceImpl implements PlacementService {
         StudentProfile student = studentProfileRepository.findById(request.getStudentId())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
-        RecruiterProfile recruiter = recruiterProfileRepository.findById(request.getRecruiterId())
-                .orElseThrow(() -> new RuntimeException("Recruiter not found"));
-
         Job job = jobRepository.findById(request.getJobId())
                 .orElseThrow(() -> new RuntimeException("Job not found"));
+
+        RecruiterProfile recruiter = null;
+        if (request.getRecruiterId() != null) {
+            recruiter = recruiterProfileRepository.findById(request.getRecruiterId()).orElse(null);
+        }
+        if (recruiter == null) {
+            recruiter = job.getRecruiter();
+        }
+        if (recruiter == null) {
+            throw new RuntimeException("Recruiter profile not found for this placement.");
+        }
 
         if (!jobApplicationRepository.existsByStudentAndJobAndApplicationStatus(student, job, "SELECTED")) {
             throw new RuntimeException("Placement can only be created for selected applications.");
