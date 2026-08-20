@@ -72,14 +72,33 @@ export default function StudentJobDetails() {
       toast.success('Application submitted successfully!');
       setHasApplied(true);
       setShowApplyModal(false);
-      const appsData = await studentService.getApplications();
-      setApplications(appsData.content || []);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to submit application.');
     } finally {
       setApplying(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="d-flex flex-column align-items-center justify-content-center py-5" style={{ minHeight: '60vh' }}>
+        <Loader2 className="animate-spin text-primary mb-3" size={40} />
+        <h6 className="text-muted fw-medium">Loading position profile...</h6>
+      </div>
+    );
+  }
+
+  if (!job) {
+    return (
+      <div className="text-center py-5">
+        <h5 className="text-danger fw-bold">Position Not Found</h5>
+        <Link to="/student/jobs" className="btn-back mt-3">
+          <ArrowLeft size={16} />
+          <span>Back to Directory</span>
+        </Link>
+      </div>
+    );
+  }
 
   const isCgpaEligible = studentProfile ? studentProfile.cgpa >= (job?.minimumCgpa ?? job?.minimumCGPA ?? 0) : true;
   const isBacklogEligible = studentProfile ? studentProfile.activeBacklogs <= (job?.allowedBacklogs ?? 0) : true;
