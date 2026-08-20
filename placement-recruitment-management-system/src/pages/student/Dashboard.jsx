@@ -89,33 +89,47 @@ export default function StudentDashboard() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="container-fluid p-0">
-      {/* Welcome Hero Panel - Compact & Sleek */}
-      <div className="card border-0 mb-3 bg-white" style={{ borderRadius: '12px', boxShadow: '0 2px 5px rgba(15, 23, 42, 0.04)' }}>
-        <div className="card-body py-3 px-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 position-relative overflow-hidden">
+      {/* Welcome Hero Panel - Clean & Modern */}
+      <div className="card border-0 mb-3 bg-white" style={{ borderRadius: '14px', boxShadow: '0 2px 5px rgba(15, 23, 42, 0.04)' }}>
+        <div className="card-body py-3 px-4 d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 position-relative overflow-hidden">
           <div className="position-relative z-1">
-            <div className="d-flex align-items-center gap-2 mb-1">
-              <span className="badge bg-primary bg-opacity-10 text-primary px-2.5 py-0.5 rounded-pill fw-semibold" style={{ fontSize: '0.68rem', letterSpacing: '0.03em' }}>
-                ACADEMIC SESSION 2026
-              </span>
-            </div>
-            <h4 className="fw-bold mb-1 text-slate-900" style={{ letterSpacing: '-0.02em', fontSize: '1.25rem' }}>
+            <h3 className="fw-bold mb-1 text-slate-900" style={{ letterSpacing: '-0.025em', fontSize: '1.35rem' }}>
               Hello, {profile?.email?.split('@')[0] || userEmail?.split('@')[0] || 'Candidate'}!
-            </h4>
-            <p className="text-secondary mb-0" style={{ fontSize: '0.85rem', maxWidth: '560px', lineHeight: '1.4' }}>
+            </h3>
+            <p className="text-secondary mb-0" style={{ fontSize: '0.875rem', maxWidth: '520px', lineHeight: '1.45' }}>
               Track your interview pipelines, search open recruiter roles, and maintain your academic transcript.
             </p>
           </div>
           
-          <div className="bg-light px-3 py-2 rounded-3 border d-flex align-items-center gap-3 position-relative z-1 flex-shrink-0" style={{ borderColor: '#E2E8F0' }}>
-            <div>
-              <div className="text-muted fw-bold" style={{ fontSize: '0.65rem', letterSpacing: '0.04em' }}>CURRENT CGPA</div>
-              <div className="fw-bold text-slate-900" style={{ fontSize: '1.3rem', lineHeight: '1.1' }}>
-                {profile?.cgpa || '0.00'} <span className="text-muted fw-normal" style={{ fontSize: '0.75rem' }}>CGPA</span>
+          <div className="d-flex align-items-center gap-2.5 position-relative z-1 flex-wrap flex-sm-nowrap">
+            {/* CGPA Card */}
+            <div className="d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 border" style={{ backgroundColor: '#F8FAFC', borderColor: '#E2E8F0', minWidth: '150px' }}>
+              <div className="rounded-2 p-2 d-flex align-items-center justify-content-center" style={{ backgroundColor: '#EFF6FF', color: '#2563EB' }}>
+                <TrendingUp size={18} />
+              </div>
+              <div>
+                <div className="text-muted fw-semibold" style={{ fontSize: '0.65rem', letterSpacing: '0.04em', textTransform: 'uppercase' }}>Current CGPA</div>
+                <div className="fw-bold text-slate-900 d-flex align-items-baseline gap-1" style={{ fontSize: '1.2rem', lineHeight: 1.1 }}>
+                  {profile?.cgpa || '0.00'}
+                  <span className="text-muted fw-normal" style={{ fontSize: '0.75rem' }}>/ 10</span>
+                </div>
               </div>
             </div>
-            <div className="border-start ps-3 py-0.5 text-secondary" style={{ fontSize: '0.75rem', lineHeight: '1.3' }}>
-              <div><span className="fw-semibold text-slate-800">{profile?.activeBacklogs || 0}</span> backlogs</div>
-              <div className="text-truncate" style={{ maxWidth: '140px' }}>{profile?.department || 'Computer Science'}</div>
+
+            {/* Backlogs & Dept Card */}
+            <div className="d-flex align-items-center gap-2.5 px-3 py-2 rounded-3 border" style={{ backgroundColor: '#F8FAFC', borderColor: '#E2E8F0', minWidth: '175px' }}>
+              <div className="rounded-2 p-2 d-flex align-items-center justify-content-center" style={{ backgroundColor: (profile?.activeBacklogs || 0) > 0 ? '#FEF2F2' : '#F0FDF4', color: (profile?.activeBacklogs || 0) > 0 ? '#DC2626' : '#16A34A' }}>
+                <Award size={18} />
+              </div>
+              <div>
+                <div className="text-muted fw-semibold" style={{ fontSize: '0.65rem', letterSpacing: '0.04em', textTransform: 'uppercase' }}>Academic Status</div>
+                <div className="fw-bold text-slate-900 d-flex align-items-center gap-1.5" style={{ fontSize: '0.85rem', lineHeight: 1.2 }}>
+                  <span className={(profile?.activeBacklogs || 0) > 0 ? 'text-danger' : 'text-success'}>
+                    {profile?.activeBacklogs || 0} Backlogs
+                  </span>
+                  <span className="text-muted" style={{ fontSize: '0.75rem' }}>• {profile?.department || 'CSE'}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
