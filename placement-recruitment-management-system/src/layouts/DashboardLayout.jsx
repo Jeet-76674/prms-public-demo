@@ -19,6 +19,7 @@ import {
 import { recruiterService } from '../services/recruiterService';
 import RecruiterPendingApproval from '../pages/recruiter/PendingApproval';
 import DemoBanner from '../components/DemoBanner';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 export default function DashboardLayout() {
   const { role, userEmail, logout } = useAuth();
@@ -291,7 +292,9 @@ export default function DashboardLayout() {
           ) : restrictedRecruiter && !location.pathname.includes('/profile') ? (
             <RecruiterPendingApproval status={recruiterStatus} />
           ) : (
-            <Outlet />
+            <ErrorBoundary>
+              <Outlet />
+            </ErrorBoundary>
           )}
         </main>
       </div>

@@ -74,7 +74,22 @@ export default function TpoRecruiterDetails() {
     );
   }
 
-  if (!recruiter) return null;
+  if (!recruiter) {
+    return (
+      <div className="container-fluid p-0">
+        <div className="card border-0 bg-white shadow-sm p-5 text-center my-4" style={{ borderRadius: '16px' }}>
+          <Building2 className="text-muted mx-auto mb-3" size={48} />
+          <h5 className="fw-bold text-slate-800">Recruiter Profile Not Found</h5>
+          <p className="text-muted mb-4">The requested recruiter corporate profile could not be found or loaded.</p>
+          <div>
+            <Link to="/tpo/recruiters" className="btn btn-primary px-4 py-2 fw-semibold rounded-3 text-decoration-none">
+              Back to Recruiter Directory
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="container-fluid p-0">

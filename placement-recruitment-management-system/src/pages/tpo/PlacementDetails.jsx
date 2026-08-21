@@ -99,7 +99,22 @@ export default function TpoPlacementDetails() {
     );
   }
 
-  if (!placement) return null;
+  if (!placement) {
+    return (
+      <div className="container-fluid p-0">
+        <div className="card border-0 bg-white shadow-sm p-5 text-center my-4" style={{ borderRadius: '16px' }}>
+          <Briefcase className="text-muted mx-auto mb-3" size={48} />
+          <h5 className="fw-bold text-slate-800">Placement Record Not Found</h5>
+          <p className="text-muted mb-4">The requested placement record could not be found or loaded.</p>
+          <div>
+            <button onClick={() => navigate('/tpo/placements')} className="btn btn-primary px-4 py-2 fw-semibold rounded-3">
+              Back to Placements
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const getStatusBadge = (status) => {
     switch (status) {

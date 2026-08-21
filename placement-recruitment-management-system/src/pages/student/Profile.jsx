@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { studentService } from '../../services/studentService';
+import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import {
@@ -123,7 +124,9 @@ export default function StudentProfile() {
     if (url.startsWith('http') || url.startsWith('data:image')) {
       return url;
     }
-    return `${api.defaults.baseURL}/${url.replace(/^\/+/, '')}`;
+    const cleanUrl = url.startsWith('/') ? url : `/${url}`;
+    const base = api?.defaults?.baseURL || '';
+    return base ? `${base}${cleanUrl}` : cleanUrl;
   };
 
   const handleNext = async () => {

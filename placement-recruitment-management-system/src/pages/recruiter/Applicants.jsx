@@ -224,6 +224,27 @@ export default function RecruiterApplicants() {
     );
   }
 
+  if (!job) {
+    return (
+      <div className="container py-4 text-start">
+        <Link to="/recruiter/jobs" className="btn-back mb-4">
+          <ArrowLeft size={18} className="text-primary" />
+          <span>Back to Job Listings</span>
+        </Link>
+        <div className="card border-0 bg-white shadow-sm p-5 text-center my-4" style={{ borderRadius: '16px' }}>
+          <Users className="text-muted mx-auto mb-3" size={48} />
+          <h5 className="fw-bold text-slate-800">Job Opening Not Found</h5>
+          <p className="text-muted mb-4">The requested job opening details or applicant pipeline could not be loaded.</p>
+          <div>
+            <Link to="/recruiter/jobs" className="btn btn-primary px-4 py-2 fw-semibold rounded-3 text-decoration-none">
+              Back to Job Listings
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Group applicants
   const groupedApplicants = STATUS_HIERARCHY.reduce((acc, status) => {
     const appsInStatus = applicants.filter(a => a.applicationStatus === status);
