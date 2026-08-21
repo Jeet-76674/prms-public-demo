@@ -2,12 +2,14 @@ import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import AppRoutes from './routes/AppRoutes';
 import ErrorBoundary from './components/ErrorBoundary';
+import BackendKeepAlive from './components/BackendKeepAlive';
 import { Toaster } from 'react-hot-toast';
 
 export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <BackendKeepAlive />
         <ErrorBoundary>
           {/* Toast alerts terminal - Modern Light Glass Pill Styling */}
           <Toaster
