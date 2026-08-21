@@ -277,26 +277,49 @@ export default function StudentDashboard() {
         <div className="row g-3">
           {jobs.map((job) => (
             <div key={job.id} className="col-12 col-md-4">
-              <div className="card h-100 p-3.5 card-hover border bg-white position-relative d-flex flex-column" style={{ borderRadius: '14px', borderColor: '#E2E8F0' }}>
+              <div
+                className="card h-100 card-hover border bg-white position-relative d-flex flex-column"
+                style={{
+                  borderRadius: '14px',
+                  borderColor: '#E2E8F0',
+                  padding: '1.25rem',
+                }}
+              >
                 {/* Header Top Row: Logo & Badge */}
-                <div className="d-flex align-items-center justify-content-between mb-2.5">
-                  <div className="rounded-3 border d-flex align-items-center justify-content-center" style={{ width: '42px', height: '42px', backgroundColor: '#F8FAFC' }}>
+                <div className="d-flex align-items-center justify-content-between mb-3">
+                  <div
+                    className="rounded-3 border d-flex align-items-center justify-content-center"
+                    style={{ width: '42px', height: '42px', backgroundColor: '#F8FAFC' }}
+                  >
                     <Building2 size={22} className="text-slate-700" />
                   </div>
-                  <span className="badge bg-primary-subtle text-primary border-0 fw-semibold px-2.5 py-1" style={{ fontSize: '0.68rem', letterSpacing: '0.04em' }}>
+                  <span
+                    className="badge bg-primary-subtle text-primary border-0 fw-semibold px-2.5 py-1"
+                    style={{ fontSize: '0.68rem', letterSpacing: '0.04em' }}
+                  >
                     NEW
                   </span>
                 </div>
 
-                {/* Job Title: Full display without clipping or overlap */}
-                <h6 className="fw-bold text-slate-900 mb-2" style={{ fontSize: '1rem', lineHeight: '1.4', letterSpacing: '-0.01em' }}>
+                {/* Job Title */}
+                <h6
+                  className="fw-bold text-slate-900 mb-2 text-truncate"
+                  title={job.title}
+                  style={{ fontSize: '1rem', lineHeight: '1.4', letterSpacing: '-0.01em' }}
+                >
                   {job.title}
                 </h6>
 
                 {/* Metadata Row */}
-                <div className="d-flex align-items-center gap-2 text-secondary mb-3 mt-auto pt-1" style={{ fontSize: '0.8rem' }}>
+                <div
+                  className="d-flex align-items-center gap-2 text-secondary mb-3 mt-auto pt-2"
+                  style={{ fontSize: '0.8rem' }}
+                >
                   <span className="d-inline-flex align-items-center gap-1 text-truncate">
-                    <MapPin size={13} className="text-muted flex-shrink-0" /> {job.location?.includes(job.workMode) ? job.location : `${job.location || 'Pune'} • ${job.workMode || 'On-Site'}`}
+                    <MapPin size={13} className="text-muted flex-shrink-0" />{' '}
+                    {job.location?.includes(job.workMode)
+                      ? job.location
+                      : `${job.location || 'Pune'} • ${job.workMode || 'On-Site'}`}
                   </span>
                   <span className="text-muted opacity-50">•</span>
                   <span className="d-inline-flex align-items-center gap-1 flex-shrink-0">
@@ -305,7 +328,11 @@ export default function StudentDashboard() {
                 </div>
 
                 {/* Action Button */}
-                <Link to={`/student/jobs/${job.id}`} className="btn btn-primary w-100 py-2 fw-semibold d-flex align-items-center justify-content-center" style={{ borderRadius: '8px', fontSize: '0.9rem' }}>
+                <Link
+                  to={`/student/jobs/${job.id}`}
+                  className="btn btn-primary w-100 py-2 fw-semibold d-flex align-items-center justify-content-center mt-1"
+                  style={{ borderRadius: '8px', fontSize: '0.9rem' }}
+                >
                   View details
                 </Link>
               </div>
