@@ -14,7 +14,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class CorsConfig {
 
-    @Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:3000}")
+    @Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:3000,http://localhost:3001,https://prms-public-demo.vercel.app,https://*.vercel.app}")
     private String allowedOrigins;
 
     @Bean
@@ -31,7 +31,7 @@ public class CorsConfig {
             configuration.setAllowedOriginPatterns(List.of("*"));
             configuration.setAllowCredentials(false);
         } else {
-            configuration.setAllowedOrigins(origins);
+            configuration.setAllowedOriginPatterns(origins);
             configuration.setAllowCredentials(true);
         }
 

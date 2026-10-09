@@ -12,14 +12,17 @@ export default function BackendKeepAlive() {
   useEffect(() => {
     const fireHealthPing = async () => {
       try {
-        const baseURL = import.meta.env.VITE_API_URL || '';
-        const healthUrl = baseURL ? `${baseURL.replace(/\/+$/, '')}/health` : '/health';
+        const rawBaseURL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://prms-backend-jlrr.onrender.com' : '');
+        const healthUrl = rawBaseURL ? `${rawBaseURL.replace(/\/+$/, '')}/health` : '/health';
         
+        const reqHeaders = {};
+        if (healthUrl.includes('ngrok')) {
+          reqHeaders['ngrok-skip-browser-warning'] = 'true';
+        }
+
         await axios.get(healthUrl, {
-          timeout: 12000,
-          headers: {
-            'ngrok-skip-browser-warning': 'true',
-          },
+          timeout: 30000,
+          headers: reqHeaders,
         });
       } catch {
         // Silent catch: cold-start warming or offline states should not interrupt the UI

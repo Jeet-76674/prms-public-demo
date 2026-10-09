@@ -21,46 +21,50 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private DemoDataService demoDataService;
 
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DataInitializer.class);
+
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
+        try {
+            if (demoDataService.isDemoEnabled()) {
+                demoDataService.seedBaselineIfEmpty();
+                return;
+            }
 
-        if (demoDataService.isDemoEnabled()) {
-            demoDataService.seedBaselineIfEmpty();
-            return;
+            // Production Initializer: Seed initial VC if missing
+            if (userRepository.findByEmail("vc@indus.edu").isEmpty()
+                    && !userRepository.existsByPhoneNumber("9999999999")) {
+
+                User vcUser = new User();
+                vcUser.setFirstName("Vice");
+                vcUser.setLastName("Chancellor");
+                vcUser.setEmail("vc@indus.edu");
+                vcUser.setPhoneNumber("9999999999");
+                vcUser.setPassword(passwordEncoder.encode("Password@123"));
+                vcUser.setRole("VC");
+                vcUser.setAccountStatus("ACTIVE");
+
+                userRepository.save(vcUser);
+            }
+
+            // Production Initializer: Seed initial TPO if missing
+            if (userRepository.findByEmail("tpo@indus.edu").isEmpty()
+                    && !userRepository.existsByPhoneNumber("8888888888")) {
+
+                User tpoUser = new User();
+                tpoUser.setFirstName("Training");
+                tpoUser.setLastName("Placement Officer");
+                tpoUser.setEmail("tpo@indus.edu");
+                tpoUser.setPhoneNumber("8888888888");
+                tpoUser.setPassword(passwordEncoder.encode("Password@123"));
+                tpoUser.setRole("TPO");
+                tpoUser.setAccountStatus("ACTIVE");
+
+                userRepository.save(tpoUser);
+            }
+        } catch (Exception ex) {
+            logger.warn("Data initialization encountered a temporary issue on startup: {}", ex.getMessage());
         }
-
-        // Production Initializer: Seed initial VC if missing
-        if (userRepository.findByEmail("vc@indus.edu").isEmpty()
-                && !userRepository.existsByPhoneNumber("9999999999")) {
-
-            User vcUser = new User();
-            vcUser.setFirstName("Vice");
-            vcUser.setLastName("Chancellor");
-            vcUser.setEmail("vc@indus.edu");
-            vcUser.setPhoneNumber("9999999999");
-            vcUser.setPassword(passwordEncoder.encode("Password@123"));
-            vcUser.setRole("VC");
-            vcUser.setAccountStatus("ACTIVE");
-
-            userRepository.save(vcUser);
-        }
-
-        // Production Initializer: Seed initial TPO if missing
-        if (userRepository.findByEmail("tpo@indus.edu").isEmpty()
-                && !userRepository.existsByPhoneNumber("8888888888")) {
-
-            User tpoUser = new User();
-            tpoUser.setFirstName("Training");
-            tpoUser.setLastName("Placement Officer");
-            tpoUser.setEmail("tpo@indus.edu");
-            tpoUser.setPhoneNumber("8888888888");
-            tpoUser.setPassword(passwordEncoder.encode("Password@123"));
-            tpoUser.setRole("TPO");
-            tpoUser.setAccountStatus("ACTIVE");
-
-            userRepository.save(tpoUser);
-        }
-
     }
 
 }

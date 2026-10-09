@@ -34,7 +34,16 @@ export function AuthProvider({ children }) {
       return { success: true, profileCompleted: isCompleted };
     } catch (error) {
       if (!silent) {
-        toast.error(error.response?.data?.message || 'Authentication failed. Please check your credentials.', { id: 'auth-error-toast' });
+        if (!error.response) {
+          // Network error or timeout: already handled by api.interceptors with network-error-toast.
+          // Do NOT display misleading "Authentication failed" toast when the backend is offline or waking up.
+        } else if (error.response.status === 400 || error.response.status === 401) {
+          toast.error(error.response.data?.message || 'Authentication failed. Please check your credentials.', { id: 'auth-error-toast' });
+        } else if (error.response.status >= 500) {
+          // Server errors are handled by api.interceptors with server-error-toast
+        } else {
+          toast.error(error.response.data?.message || 'Authentication failed. Please check your credentials.', { id: 'auth-error-toast' });
+        }
       }
       return { success: false, error };
     }
@@ -49,7 +58,9 @@ export function AuthProvider({ children }) {
       await login(signupData.email, signupData.password, selectedRole, true);
       return { success: true, email: signupData.email };
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Registration failed. Please try again.', { id: 'auth-signup-error' });
+      if (error.response) {
+        toast.error(error.response.data?.message || 'Registration failed. Please try again.', { id: 'auth-signup-error' });
+      }
       return { success: false, error };
     }
   };

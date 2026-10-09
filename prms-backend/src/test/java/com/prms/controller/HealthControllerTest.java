@@ -7,10 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.head;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class HealthControllerTest {
@@ -25,17 +28,27 @@ public class HealthControllerTest {
     }
 
     @Test
-    void healthCheckReturnsExpectedStringDirectly() {
-        ResponseEntity<String> response = healthController.health();
+    void healthCheckReturnsExpectedJsonDirectly() {
+        ResponseEntity<Map<String, Object>> response = healthController.health();
         assertNotNull(response);
         assertEquals(200, response.getStatusCode().value());
-        assertEquals("PRMS Backend is running", response.getBody());
+        assertNotNull(response.getBody());
+        assertEquals("UP", response.getBody().get("status"));
+        assertEquals("PRMS Backend is running", response.getBody().get("message"));
     }
 
     @Test
     void healthEndpointReturns200WithMockMvc() throws Exception {
         mockMvc.perform(get("/health"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("PRMS Backend is running"));
+                .andExpect(jsonPath("$.status").value("UP"))
+                .andExpect(jsonPath("$.message").value("PRMS Backend is running"));
+
+        mockMvc.perform(get("/api/health"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("UP"));
+
+        mockMvc.perform(head("/health"))
+                .andExpect(status().isOk());
     }
 }

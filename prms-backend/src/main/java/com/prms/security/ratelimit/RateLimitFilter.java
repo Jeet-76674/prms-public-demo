@@ -29,6 +29,17 @@ public class RateLimitFilter extends OncePerRequestFilter {
     private RateLimitProperties rateLimitProperties;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return path != null && (
+                path.equals("/health") ||
+                path.startsWith("/health/") ||
+                path.equals("/api/health") ||
+                path.startsWith("/api/health/")
+        );
+    }
+
+    @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
